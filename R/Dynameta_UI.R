@@ -1,0 +1,511 @@
+# Need to remove bits not relevant to package - e.g. googlesheets not needed
+# import packages at start
+# other roxygen comments
+
+ui <- navbarPage(
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  # Add a theme for the app
+  # theme = bslib::bs_theme(bootswatch = "flatly", # flatly is the theme name
+  #                         success = "#2c76fe"), # make certain bits the same blue as seen in the app (used colour picker to find exact colour)
+  theme = UKCEH_theme,
+  
+  # Use titlePanel() to use the UKCEH logo the title, and change tab/window title
+  titlePanel(title = img(src= "https://www.ceh.ac.uk/sites/default/files/images/theme/ukceh_logo_long_720x170_rgb.png", style= "height: 70px;vertical-align:middle;"),
+             windowTitle = paste0("Interactive platform for insect biodiversity meta-analyses"," | UK Centre for Ecology & Hydrology")),
+  
+  # Add favicon - show UKCEH logo in tab
+  tags$head(tags$link(rel="shortcut icon", href="https://brandroom.ceh.ac.uk/themes/custom/ceh/favicon.ico")),
+  
+  # Add a custom error message if the whole app disconnects / fails
+  # Using header makes it apply to all tabs
+  header = disconnectMessage(text = "An error has occured, please reload the page and try again.",
+                             refresh = "", # Don't include a refresh button
+                             width = "full", # Message should take up full width of screen
+                             size = 30, # Size 30 writing
+                             background = "#0483A4", # Blue background
+                             colour = "white", # White writing
+                             overlayColour = "grey", # Covers the app and draws attention to message
+                             overlayOpacity = 0.8), # Nearly full opaque
+  
+  # title = icon("bug", lib = "font-awesome", "fa-2x"), # include bug icon as title (gives warning but seems to work)
+  # title = img(src= "https://www.ceh.ac.uk/sites/default/files/images/theme/ukceh_logo_long_720x170_rgb.png",
+  #            style= "height: 70px;vertical-align:middle;"),
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  # Intro tab
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  tabPanel("Introduction",
+           
+           # Make all the tab buttons bigger
+           tags$head(
+             tags$style(
+               HTML(".navbar-nav > li > a {
+                font-size: 30px;
+              }")
+             )
+           ),
+           
+           # ----------------------------------------------------------------------------------------------------------------------
+           
+           # Pre-amble
+           p(h1(tags$b("An interactive platform for insect biodiversity meta-analyses"))),
+           
+           tags$br(),
+           
+           p(h5("Insects are a highly diverse taxa and provide vital ecological services, though their underrepresentation in research compared to vertebrates
+                results in a knowledge gap of insect biodiversity change and its drivers.")),
+           
+           p(h5("This app is designed to best utilise the insect biodiversity data available by allowing users to interactively run meta-meta-analytic models,
+                which involves analysing multiple meta-analytic studies together by combining effect sizes for each of these.")),
+           
+           p(h5("Data is taken from a database containing a collection of meta-analytic studies, described as a 'living' database
+                due to the ability of users to upload new data from their own meta-analyses.")),
+           
+           p(h5("The app can be used to investigate the effect of threats (based on ",
+                tags$a(href="https://www.iucnredlist.org/resources/threat-classification-scheme", "IUCN threats classification scheme)"),
+                " on biodiversity in terms of the log response ratio (quantifies proportionate change between treatments).
+                You can filter the data by threat, location, taxonomic order, and biodiversity metric.")),
+           
+           p(h5("The app is split into 3 main sections:")),
+           
+           # Make bullet point list of the descriptions of the 3 main tabs
+           h5(tags$ol(
+             tags$li("Use this 'Introduction' to investigate the data sources used within the app."),
+             tags$li("Go to 'Run models' to run models to investigate the effect of different threats on biodiversity."),
+             tags$li("Go to 'Upload data' to upload data from your own meta-analysis.")
+           )),
+           
+           # link to code
+           p(h5(icon("github", lib = "font-awesome", "fa-2x"), # add-in github icon
+                tags$a(href="https://github.com/gls21/insect_biodiversity_meta_analytic_shiny_app", "View app source code"))),  ######### Change once repo is public
+           
+           tags$br(),
+           tags$hr(),
+           
+           # ----------------------------------------------------------------------------------------------------------------------
+           
+           ### Make tables on where data comes from
+           
+           p(h2(tags$b("Introduction"))),
+           
+           p(h3("Use this tab to investigate the data sources used within this app.")),
+           
+           tags$hr(),
+           
+           fluidRow(
+             
+             column(
+               5, # width of this column within the row (each row has to sum to 12 - includes offsets)
+               
+               # add table legend for overview table
+               h5(htmlOutput("table_legend_overview")),
+               
+               # add sample size overview table
+               h5(withSpinner(tableOutput("sample_sizes_overview"), type = 8)),
+               
+               tags$br(),
+               
+               tags$hr(),
+               
+               tags$br(),
+               
+               # add user choice of which threat to show details for
+               # This will be reactive based on what threats are included in the data - so can change as more threats are added
+               # The options are specified in the server file
+               h5(uiOutput("reactive_threat")),
+               
+               tags$br(),
+               
+               # add table legend
+               h5(htmlOutput("table_legend_threat_details")),
+               
+               # add paper details table
+               h5(withSpinner(tableOutput("threat_details_table"), type = 8)),
+               
+               tags$br()
+               
+             ),
+             
+             column(
+               7,
+               
+               # Add map of where data comes from
+               withSpinner(leafletOutput("map"), type = 8),
+               
+               # Add map figure legend
+               h5(htmlOutput("map_figure_legend")),
+               
+               tags$br(),
+               
+             )
+           )
+           
+           # ----------------------------------------------------------------------------------------------------------------------
+           
+  ),
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  # Modelling tab
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  tabPanel("Run models",
+           
+           # ----------------------------------------------------------------------------------------------------------------------
+           
+           # Title to show at top of tab
+           p(h2(tags$b("Run models"))),
+           
+           p(h5("Use this tab to investigate how different threats impact biodiversity.
+                The models run are metafor multivariate meta-analysis (rma.mv()) models.
+                The effect size used is ROM (log transformed Ratio Of Means / log response ratio)).
+                You are able to filter the data based on threat, location, taxonomic order, and biodiversity metric.")),
+           
+           tags$br(),
+           tags$hr(),
+           
+           # -----------------------------------------------------------------------------------------------------------------------
+           
+           # ===========================================================================================================
+           
+           ### Running custom models
+           
+           # ===========================================================================================================
+           
+           h5("Use this section to filter the data you are interested in based on the criteria below.
+              Once you have made your selections, click 'Run custom model'. The model should take less than a minute to run,
+              and then you will be able to view a figure of the results."),
+           
+           tags$br(),
+           
+           # --------------------------------------------------------------------------------------------------
+           
+           # User inputs on what model to run and a button to run the model
+           
+           fluidRow(
+             
+             column(
+               3,
+               
+               h4(uiOutput("reactive_iucn_threat_category"))
+               
+             ),
+             
+             column(
+               3,
+               
+               h4(uiOutput("reactive_location"))
+               
+             ),
+             
+             column(
+               3,
+               
+               h4(uiOutput("reactive_taxa_order"))
+               
+             ),
+             
+             column(
+               3,
+               
+               h4(uiOutput("reactive_biodiversity_metric_category"))
+               
+             )
+             
+           ),
+           
+           tags$br(),
+           
+           fluidRow(
+             
+             column(
+               12,
+               
+               # include action button to run model once inputs have been selected
+               actionButton("run_custom_model", "Run custom model", style='font-size:125%')
+             )
+             
+           ),
+           
+           tags$br(),
+           
+           # --------------------------------------------------------------------------------------------------
+           
+           # Graph and table produced based on the custom model run
+           
+           fluidRow(
+             
+             column(
+               12,
+               
+               # This will make the stop error messages grey (rather than red) if the model doesn't run
+               tags$head(tags$style(".shiny-output-error{color: grey;}")),
+               
+               # produce custom model graph
+               withSpinner(plotOutput("custom_model_figure", width = 1500, height = 1000), type = 8)
+               
+             )
+             
+             # column(
+             #   5,
+             #
+             #   # add table legend
+             #   h5(htmlOutput("table_legend_custom_model_output")),
+             #
+             #   # add custom model table
+             #   h5(withSpinner(tableOutput("custom_model_output_table"), type = 8)) # shows a loading symbol while model is running.
+             # )
+             
+           ),
+           
+           fluidRow(
+             
+             column(
+               12,
+               
+               # add custom model figure legend
+               h5(htmlOutput("custom_model_figure_legend")),
+               
+             )
+             
+           ),
+           
+           tags$br(),
+           tags$hr(),
+           
+           # --------------------------------------------------------------------------------------------------
+           
+           # User input on figure - plot all comparisons or subgroups?
+           
+           p(h5("Use this section to choose which graph to plot.")),
+           
+           # fluidRow(
+           #
+           #   column(
+           #     12,
+           #
+           #     # user choice of metric
+           #     h5(radioButtons(inputId = "metric2",
+           #                     label = "Select metric:",
+           #                     choices = c("Adjusted LRR", "Percentage change"),
+           #                     selected = "Adjusted LRR")
+           #
+           #     ))
+           #
+           # ),
+           
+           tags$br(),
+           tags$hr(),
+           
+           # --------------------------------------------------------------------------------------------------
+           
+           # Click to see descriptions of threats???? and put buttons for downloading custom model results
+           
+           p(h5("Use this section to view definitions of the ???, and download the results.")),
+           
+           p(h5(tags$ul(
+             tags$li("Click 'Download R custom model summary' to download a .txt file containing the output of the summary() function
+                applied to the custom model object. This provides a results summary of the model fitting."),
+             tags$li("Click 'Download R custom model object' to download a .rds file containing the model object. This has additional
+                     attributes attached, which specify the date and time the model was run, the filters that were applied to the data prior to running the model,
+                     and the R session information. Once downloaded to your workspace, the object can be loaded with the readRDS() function, and its
+                     attributes can be viewed using the attributes() function. By downloading the model object, it allows the same analysis to be repeated
+                     at a later date (perhaps after more data has been uploaded to the app). ")
+           ))),
+           
+           fluidRow(
+             
+             # column(
+             #   3,
+             #   actionButton("show2", "Click to see definitions of agricultural systems", style='font-size:125%')
+             # ),
+             #
+             # column(
+             #   3,
+             #   actionButton("hide2", "Hide", style='font-size:125%')
+             # ),
+             
+             column(
+               6,
+               
+               shinyjs::useShinyjs(), # so can enable and disable the download buttons
+               
+               # download button for downloading model output
+               downloadButton(outputId = "download_custom_model_output",
+                              label = "Download R custom model summary",
+                              style='font-size:125%')
+               
+             ),
+             
+             column(
+               6,
+               
+               shinyjs::useShinyjs(), # so can enable and disable the download buttons
+               
+               # download button for downloading model object in rds file
+               downloadButton(outputId = "download_custom_model_object",
+                              label = "Download R custom model object",
+                              style='font-size:125%')
+               
+             )
+             
+             # column(
+             #   3,
+             #
+             #   # download button for downloading table of coefficients
+             #   downloadButton(outputId = "download_custom_model_coeffs",
+             #                  label = "Download custom model table of coefficients",
+             #                  style='font-size:125%')
+             # ),
+             
+             
+           ),
+           
+           tags$br(),
+           tags$br()
+           
+           # fluidRow(
+           #
+           #   h5(tableOutput("agri_sys_defs_table2"))
+           #
+           # )
+           
+  ), # close modelling tab
+  
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  # Upload data tab
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  tabPanel("Upload data",
+           
+           fluidRow(
+             
+             column(
+               12,
+               
+               # Text to explain what the tab is for
+               p(h2(tags$b("Upload data"))),
+               
+               h5(p("The app is based on data that is read in from a database stored in Google Sheets. Here you can add a spreadsheet of results from your own meta-analysis,
+                    which will then be incorporated into the model outputs of the app. To upload, please follow the steps below:")),
+               
+               h5(tags$ol(
+                 tags$li("Enter your first and second name (containing letters, hyphens, and spaces only). This will be used to name the spreadsheet in the database containing your data."),
+                 tags$li("Click 'Browse' to choose and upload your file. The file must be a csv, and be structured in the same way as *this file/example*.
+                          Upon meeting the checks, the file will be uploaded to the app and a preview of your chosen file will appear."),
+                 tags$li("If you are happy with your chosen file, you can then click 'Upload to database' to store your file remotely.
+                          Upon refreshing the app, any new outputs will include your uploaded data.")
+               )),
+               
+             )
+             
+           ),
+           
+           tags$hr(),
+           
+           fluidRow(
+             
+             column(
+               2,
+               
+               # User can input their first name
+               h5(textInput("first_name", "Please insert your first name:")),
+               
+               # User can input their second name
+               h5(textInput("second_name", "Please insert your second name:")),
+               
+               tags$br(),
+               
+               # If meets the checks, the acceptable name will be printed. Otherwise, it will display warnings
+               h5(htmlOutput("name_inputted"))
+               
+             ),
+             
+             column(
+               2,
+               
+               # Upload button to upload csv file to the shiny app
+               h5(fileInput("preview_upload", "Click 'Browse' to upload your meta-analysis data and view a preview", accept = ".csv")),
+               
+               tags$br(),
+               
+               h5(p("Once previewed, click here to upload your data to the database")),
+               
+               # Button to click to upload the data to the googlesheet
+               actionButton("upload_to_googlesheets", "Upload to database", style='font-size:125%'),
+               
+               tags$br(),
+               
+               tags$br(),
+               
+               tags$hr(),
+               
+               # Success message if data sheet gets successfully uploaded to googlesheets
+               h5(htmlOutput("upload_complete"))
+               
+             ),
+             
+             column(
+               8,
+               
+               # add table legend
+               h5(htmlOutput("preview_upload_data_legend")),
+               
+               # Preview of data to be uploaded
+               h5(withSpinner(tableOutput("preview_upload_data"), type = 8))
+               
+             )
+             
+           ),
+           
+           tags$br()
+           
+  ),
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  # References tab
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+  tabPanel("References",
+           
+           # Text to explain what the tab is for
+           p(h2(tags$b("References"))),
+           
+           # Include table legend for references table
+           h5(htmlOutput("references_table_legend")),
+           
+           # add paper details table
+           h5(withSpinner(tableOutput("references_table"), type = 8)),
+           
+           tags$br()
+           
+  )
+  
+  # ===============================================================================================================================
+  # ===============================================================================================================================
+  
+)
