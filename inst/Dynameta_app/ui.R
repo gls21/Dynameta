@@ -1,14 +1,12 @@
-#' Dynameta shiny app ui script
-#' 
-#' Script that defines the user interface of Dynameta shiny app
-#' 
-#' @import shiny
-#' @importFrom bslib bs_theme bs_add_variables font_link
-#' @importFrom shinydisconnect disconnectMessage
-#' @importFrom shinycssloaders withSpinner
-#' @importFrom leaflet leafletOutput
-#' @importFrom shinyjs useShinyjs
+# Dynameta shiny app ui script
 
+# Load packages
+library(bslib) # For themes to customise appearance of shiny app (bs_theme bs_add_variables font_link)
+library(leaflet) # for mapping (leafletOutput)
+library(shiny)
+library(shinycssloaders) # for loading symbols (while models run) (withSpinner)
+library(shinydisconnect) # for displaying nice error message if whole shiny app disconnects (disconnectMessage)
+library(shinyjs) # for enabling and disabling download button (useShinyjs)
 
 ui <- shiny::navbarPage(
   

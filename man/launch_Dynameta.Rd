@@ -7,7 +7,7 @@
 launch_Dynameta()
 }
 \value{
-shiny application object
+Shiny application object
 }
 \description{
 Launches the Dynameta shiny app

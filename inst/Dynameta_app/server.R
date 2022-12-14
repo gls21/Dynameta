@@ -1,18 +1,13 @@
-#' Dynameta shiny app server function
-#' 
-#' Script that defines the server function of Dynameta shiny app
-#' 
-#' @param input provided by shiny
-#' @param output provided by shiny
-#'
-#' @import shiny
-#' @importFrom dplyr "%>%" filter arrange relocate distinct
-#' @importFrom leaflet renderLeaflet leaflet addTiles addCircleMarkers
-#' @importFrom tidyr drop_na
-#' @importFrom shinyWidgets pickerInput
-#' @importFrom metafor escalc rma.mv forest
-#' @importFrom shinyjs enable disable
+# Dynameta shiny app server script
 
+# Load packages
+library(dplyr) # for data manipulation, part of tidyverse ("%>%" filter arrange relocate distinct)
+library(leaflet) # for mapping (renderLeaflet leaflet addTiles addCircleMarkers)
+library(metafor) # for running meta-analytic models (escalc rma.mv forest)
+library(shiny) # Required to run any Shiny app
+library(shinyjs) # for enabling and disabling download button (enable disable)
+library(shinyWidgets) # for including a 'select all' option for filters (pickerInput)
+library(tidyr) # for tidying messy data, part of tidyverse (drop_na)
 
 server <- function(input, output) {
   
