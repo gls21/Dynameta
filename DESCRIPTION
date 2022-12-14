@@ -1,15 +1,34 @@
 Package: Dynameta
-Title: What the Package Does (One Line, Title Case)
+Title: A dynamic platform for ecological meta-analyses in R Shiny
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+Authors@R: person("Grace", "Skinner", email = "GraSki@ceh.ac.uk",
+    role = c("aut", "cre")
+Description: A living-review (continually updateable) R Shiny platform for
+    interactive ecological meta-analyses, oriented around testing the
+    effect of anthropogenic threats on biodiversity. This platform is
+    written as an R package and highly generalisable, such that it can be
+    applied in the context of any meta-analytic PICO question concerning
+    the effect of any IUCN threat on any taxonomic group, biodiversity
+    metric, or geographic region. Analyse sample data included in the
+    package or your own data.
+License: use_mit_license()
+URL: https://github.com/gls21/Dynameta
+BugReports: https://github.com/gls21/Dynameta/issues
 Depends: 
     R (>= 2.10)
+Imports: 
+    bslib,
+    devtools,
+    dplyr,
+    leaflet,
+    metafor,
+    shiny,
+    shinycssloaders,
+    shinydisconnect,
+    shinyjs,
+    shinyWidgets,
+    tidyr
+Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.2

@@ -1,11 +1,17 @@
-# Need to remove bits not relevant to package - e.g. googlesheets not needed
-# import packages at start
-# other roxygen comments
-
-# Original way I read data in when 1st started developing the app
-# robust_coefficients_all <- reactive({
-#   read.csv("data_and_models/robust_coefficients.csv", row.names = 1)
-# })
+#' Dynameta shiny app server function
+#' 
+#' Script that defines the server function of Dynameta shiny app
+#' 
+#' @param input provided by shiny
+#' @param output provided by shiny
+#'
+#' @import shiny
+#' @importFrom dplyr "%>%" filter arrange relocate distinct
+#' @importFrom leaflet renderLeaflet leaflet addTiles addCircleMarkers
+#' @importFrom tidyr drop_na
+#' @importFrom shinyWidgets pickerInput
+#' @importFrom metafor escalc rma.mv forest
+#' @importFrom shinyjs enable disable
 
 
 server <- function(input, output) {
@@ -13,57 +19,20 @@ server <- function(input, output) {
   # =================================================================================================================
   # =================================================================================================================
   
-  # Load data that will be use throughout server.R file
+  ##### Load data that will be use throughout server.R file
   
   # =================================================================================================================
   # =================================================================================================================
   
   # -------------------------------------------------------------------------------------
   
-  # Load data from Google Sheets
-  
-  sheets_names <- reactive({
-    # Get a list of the sheets present within the shiny_app_data googlesheet
-    sheets_names <- sheet_names(sheet_id)
-  })
-  
-  list_of_data <- reactive({
-    # Read each of the sheets and load their data. Puts them into a list of dataframes
-    list_of_data <- lapply(sheets_names(), function (x) read_sheet(ss = sheet_id, sheet = x))
-  })
-  
-  number_of_studies <- reactive({
-    # Count the number of sheets present
-    number_of_studies <- length(list_of_data())
-  })
-  
+  # Create reactive data object
+  # Data is automatically loaded when the package is loaded
   data <- reactive({
-    # The initial data is Daero's data
-    data <- list_of_data()[[1]]
-    
-    # Use a for loop to rbind all the sheets together into 1 dataframe (if more than 1 present)
-    if (number_of_studies() > 1) {
-      for (i in 2:number_of_studies()) {
-        data <- rbind(data, list_of_data()[[i]])
-      }
-    }
-    
-    data <- data
+    data <- sample_data
   })
   
   # -------------------------------------------------------------------------------------
-  
-  #### Change later?
-  # Get table of sample sizes - how many instances do we have of each agricultural system? Used later on to add Conventional back into tables.
-  sample_sizes <- reactive({
-    sample_sizes <- as.data.frame(table(data()$Treatment))
-    colnames(sample_sizes) <- c("Treatment", "Frequency")
-    
-    sample_sizes <- sample_sizes
-  })
-  
-  # -------------------------------------------------------------------------------------
-  
   
   # =================================================================================================================
   # =================================================================================================================
@@ -75,27 +44,27 @@ server <- function(input, output) {
   
   # ---------------------------------------------------------------------------------------------------------------
   
-  ### Table for overview of papers included (in intro tab)
+  ### Table for overview of papers included 
   
   # Add table legend
-  output$table_legend_overview <- renderText({
-    paste("<b>Table 1.</b>", "Total number of papers and data points available to investigate each threat category.")
+  output$table_legend_overview <- shiny::renderText({
+    base::paste("<b>Table 1.</b>", "Total number of papers and data points available to investigate each threat category.")
   })
   
   # Add sample size table
-  output$sample_sizes_overview <- renderTable({
+  output$sample_sizes_overview <- shiny::renderTable({
     
     # Initialise empty data frame
-    sample_sizes_table <- data.frame(Threat_category = character(), Number_of_papers = numeric(), Total_data_points = numeric())
+    sample_sizes_table <- base::data.frame(Threat_category = character(), Number_of_papers = numeric(), Total_data_points = numeric())
     
     # Calculate statistics for each paper
     for (i in unique(data()$IUCN_threat_category_1)) { # data is whole spreadsheet
       
       threat_subset <- data() %>%
-        filter(IUCN_threat_category_1 %in% i)
+        dplyr::filter(IUCN_threat_category_1 %in% i)
       
       # make new row which will be added to sample_sizes_table
-      new_row <- data.frame(
+      new_row <- base::data.frame(
         Threat_category = i,
         Number_of_papers = length(unique(threat_subset$Paper_ID)), # number of unique agricultural systems
         Total_data_points = nrow(threat_subset) # number of instances
@@ -122,11 +91,11 @@ server <- function(input, output) {
   
   # ---------------------------------------------------------------------------------------------------------------
   
-  ### Table for details of specific threat chosen by user (in intro tab)
+  ### Table for details of specific threat chosen by user 
   
   # Make reactive options
-  output$reactive_threat <- renderUI({
-    selectInput(inputId = "threat",
+  output$reactive_threat <- shiny::renderUI({
+    shiny::selectInput(inputId = "threat",
                 label = "Select threat to show more details for:",
                 choices = c("", unique(data()$IUCN_threat_category_1)),
                 selected = NULL)
@@ -140,28 +109,33 @@ server <- function(input, output) {
   # Add paper details table
   output$threat_details_table <- renderTable({
     
+    # Filter for selected threat
     selected_threat <- data() %>%
-      filter(IUCN_threat_category_1 %in% input$threat) # Shows warnings if you use == rather than %in%
+      dplyr::filter(IUCN_threat_category_1 %in% input$threat) # Shows warnings if you use == rather than %in%
     
-    # threat_details_table <- selected_threat
+    # Make empty dataframe
+    threat_details_table <- base::data.frame(Paper = character(), Number_of_data_points = numeric())
     
-    threat_details_table <- data.frame(Paper = character(), Number_of_data_points = numeric())
-    
+    # Fill in dataframe
     for (i in unique(selected_threat$Paper_ID)) {
       
+      # Filter for each paper
       subset_threat_by_paper <- selected_threat %>%
-        filter(Paper_ID == i)
+        dplyr::filter(Paper_ID == i)
       
-      new_row <- data.frame(
+      # Make new row to add to dataframe
+      new_row <- base::data.frame(
         Paper = i,
         Number_of_data_points = nrow(subset_threat_by_paper)
       )
       
+      # Add row to dataframe
       threat_details_table <- rbind(threat_details_table, new_row)
     }
     
+    # Order 
     threat_details_table <- threat_details_table %>%
-      arrange(Paper)
+      dplyr::arrange(Paper)
     
     # remove _ from colnames
     colnames(threat_details_table) <- c("Paper", "Number of data points")
@@ -178,16 +152,17 @@ server <- function(input, output) {
   
   # Map of where data comes from
   
-  output$map <- renderLeaflet({
+  output$map <- leaflet::renderLeaflet({
     
     # Filter the data to include data points which have long and lat available
     coord_data <- data() %>%
-      drop_na(Longitude, Latitude) %>%
-      filter(Longitude != "." & Latitude != ".")
+      tidyr::drop_na(Longitude, Latitude) %>%
+      dplyr::filter(Longitude != "." & Latitude != ".")
     
-    leaflet(data = coord_data) %>%
-      addTiles() %>% # default basemap
-      addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
+    # Make leaflet map
+    leaflet::leaflet(data = coord_data) %>%
+      leaflet::addTiles() %>% # default basemap
+      leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
                        label = ~as.character(Observation_ID), labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
                        clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
     
@@ -208,8 +183,8 @@ server <- function(input, output) {
   })
   
   # Add map figure legend
-  output$map_figure_legend <- renderText({
-    paste("<b>Figure 1.</b>", "Map providing geographic representativeness of data included in this app based on latitude and longitude co-ordinates.
+  output$map_figure_legend <- shiny::renderText({
+    base::paste("<b>Figure 1.</b>", "Map providing geographic representativeness of data included in this app based on latitude and longitude co-ordinates.
           Currently,", data_with_coords(), "out of", total_data_points(), "data points have co-ordinates provided to enable them to be plotted.<br>
           Often, data points are recorded with the same co-ordinates. Zoom in on (or click on) a cluster to explore the map.
           When you reach a zoom where a cluster represents data points all collected at the same location,
@@ -229,8 +204,8 @@ server <- function(input, output) {
   # ----------------------------------------------------------------------------------------------------
   
   # Make reactive IUCN threat category choices
-  output$reactive_iucn_threat_category <- renderUI({
-    pickerInput(inputId = "iucn_threat_category",
+  output$reactive_iucn_threat_category <- shiny::renderUI({
+    shinyWidgets::pickerInput(inputId = "iucn_threat_category",
                 label = "IUCN Threat:",
                 choices = unique(data()$IUCN_threat_category_1),
                 selected = NULL,
@@ -238,8 +213,8 @@ server <- function(input, output) {
   })
   
   # Make reactive location choices
-  output$reactive_location <- renderUI({
-    pickerInput(inputId = "location",
+  output$reactive_location <- shiny::renderUI({
+    shinyWidgets::pickerInput(inputId = "location",
                 label = "Location(s):",
                 choices = unique(data()$Country),
                 selected = NULL,
@@ -248,8 +223,8 @@ server <- function(input, output) {
   })
   
   # Make reactive taxa order choices
-  output$reactive_taxa_order <- renderUI({
-    pickerInput(inputId = "taxa_order",
+  output$reactive_taxa_order <- shiny::renderUI({
+    shinyWidgets::pickerInput(inputId = "taxa_order",
                 label = "Taxonomic order(s):",
                 choices = unique(data()$Order),
                 selected = NULL,
@@ -258,8 +233,8 @@ server <- function(input, output) {
   })
   
   # Make reactive biodiversity metric choices
-  output$reactive_biodiversity_metric_category <- renderUI({
-    pickerInput(inputId = "biodiversity_metric_category",
+  output$reactive_biodiversity_metric_category <- shiny::renderUI({
+    shinyWidgets::pickerInput(inputId = "biodiversity_metric_category",
                 label = "Biodiversity metric(s):",
                 choices = unique(data()$Biodiversity_metric),
                 selected = NULL,
@@ -272,13 +247,13 @@ server <- function(input, output) {
   ### Run model
   
   # Filter the data based on user input and run model once the run model button has been pressed
-  custom_model <- eventReactive(input$run_custom_model, {
+  custom_model <- shiny::eventReactive(input$run_custom_model, {
     
-    validate(
-      need(input$iucn_threat_category != "", "Please select at least one threat category."),
-      need(input$location != "", "Please select at least one location."),
-      need(input$taxa_order != "", "Please select at least one taxonomic order."),
-      need(input$biodiversity_metric_category != "", "Please select at least one biodiveristy metric category.")
+    shiny::validate(
+      shiny::need(input$iucn_threat_category != "", "Please select at least one threat category."),
+      shiny::need(input$location != "", "Please select at least one location."),
+      shiny::need(input$taxa_order != "", "Please select at least one taxonomic order."),
+      shiny::need(input$biodiversity_metric_category != "", "Please select at least one biodiveristy metric category.")
     )
     
     # Filter the data based on the studies the user wants to run the model on
@@ -289,10 +264,8 @@ server <- function(input, output) {
       dplyr::filter(Biodiversity_metric %in% input$biodiversity_metric_category)
     
     # Try to run the model on the currently selected subset of data. If doesn't work, tell user to include more data.
-    tryCatch(
+    base::tryCatch(
       expr = {
-        
-        # custom_model_data_1 <- custom_model_data()
         
         # add small value to control and treatment columns
         custom_model_data$Treatment_Mean <- custom_model_data$Treatment_Mean + 0.1
@@ -300,7 +273,7 @@ server <- function(input, output) {
         
         # calculate effect sizes from number, mean, and SD - data needs to be in wide format
         # Adds yi and vi columns to data
-        custom_model_data <- escalc(measure = "ROM", # log transformed ratio of means (i.e. log response ratio)
+        custom_model_data <- metafor::escalc(measure = "ROM", # log transformed ratio of means (i.e. log response ratio)
                                     n1i = custom_model_data$Treatment_N,
                                     n2i = custom_model_data$Control_N,
                                     m1i = custom_model_data$Treatment_Mean,
@@ -312,7 +285,7 @@ server <- function(input, output) {
         
         
         # Run metafor model
-        custom_meta_model <- rma.mv(yi, vi, # effect sizes and corresponding variances
+        custom_meta_model <- metafor::rma.mv(yi, vi, # effect sizes and corresponding variances
                                     random = ~ 1 | Paper_ID/Observation_ID, # specify random-effects structure of model
                                     data = custom_model_data)
         
@@ -326,14 +299,14 @@ server <- function(input, output) {
         ### Access attributes with attributes() function
         
         # Date and time model ran
-        attr(custom_meta_model, "date_and_time") <- Sys.time()
+        base::attr(custom_meta_model, "date_and_time") <- base::Sys.time()
         # Data filters
-        attr(custom_meta_model, "data_filters_IUCN_threat") <- c("IUCN threat category: ", input$iucn_threat_category)
-        attr(custom_meta_model, "data_filters_locations") <- c("Location(s): ", input$location)
-        attr(custom_meta_model, "data_filters_taxonomic_orders") <- c("Taxonomic order(s): ", input$taxa_order)
-        attr(custom_meta_model, "data_filters_biodiversity_metric") <- c("Biodiversity_metric: ", input$biodiversity_metric_category)
+        base::attr(custom_meta_model, "data_filters_IUCN_threat") <- c("IUCN threat category: ", input$iucn_threat_category)
+        base::attr(custom_meta_model, "data_filters_locations") <- c("Location(s): ", input$location)
+        base::attr(custom_meta_model, "data_filters_taxonomic_orders") <- c("Taxonomic order(s): ", input$taxa_order)
+        base::attr(custom_meta_model, "data_filters_biodiversity_metric") <- c("Biodiversity_metric: ", input$biodiversity_metric_category)
         # Session info
-        attr(custom_meta_model, "session_info") <- sessionInfo()
+        base::attr(custom_meta_model, "session_info") <- utils::sessionInfo()
         
         
         custom_model <- custom_meta_model
@@ -346,7 +319,7 @@ server <- function(input, output) {
         #shinyjs::disable("download_custom_model_coeffs")
         
         # Then stop the process, and return this error message
-        stop(safeError("There is currently insufficient data for this model to run, please select an additional or alternative biodiversity metric category."))
+        base::stop(shiny::safeError("There is currently insufficient data for this model to run, please select an additional or alternative biodiversity metric category."))
       })
     
   })
@@ -357,9 +330,9 @@ server <- function(input, output) {
   
   custom_model_summary <- reactive({
     
-    req(custom_model())
+    shiny::req(custom_model())
     
-    custom_model_summary <- capture.output(summary(custom_model())) # capture.output allows it to be put into a txt file that the user can download
+    custom_model_summary <- utils::capture.output(base::summary(custom_model())) # capture.output allows it to be put into a txt file that the user can download
     
   })
   
@@ -389,13 +362,13 @@ server <- function(input, output) {
   
   ### Plotting custom model graph
   
-  output$custom_model_figure <- renderPlot({
+  output$custom_model_figure <- shiny::renderPlot({
     
-    req(custom_model())
+    shiny::req(custom_model())
     
-    forest <- forest(custom_model(),
+    forest <- metafor::forest(custom_model(),
                      xlim = c(-12, 8), # horizontal limits of the plot region
-                     ilab = cbind(Treatment), # add in info on treatment used
+                     ilab = base::cbind(Treatment), # add in info on treatment used
                      ilab.xpos = -8, # position treatment labels
                      order = Treatment, # Order results by treatment
                      cex = 1.5,
@@ -406,20 +379,20 @@ server <- function(input, output) {
   })
   
   # Produce figure legend
-  output$custom_model_figure_legend <- renderText({
+  output$custom_model_figure_legend <- shiny::renderText({
     
-    req(custom_model())
+    shiny::req(custom_model())
     
-    percentage_change <- round(100 * (exp(coef(custom_model())) - 1), digits = 2)
+    percentage_change <- round(100 * (exp(stats::coef(custom_model())) - 1), digits = 2)
     
     paste("<b>Figure 3. </b>", "Forest plot showing the effect sizes for each data point and the overall effect size of ",
-          paste(isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity. The overall effect size is indicated by the diamond -
+          paste(shiny::isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity. The overall effect size is indicated by the diamond -
           the placement of the centre of the diamond on the x-axis represents the point estimate,
           and the width of the diamond represents the 95% confidence interval. The ",
-          paste(isolate(input$iucn_threat_category)), " type is listed next to each data point. ",
-          "The overall effect size of ", paste(isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity for ",
-          paste(isolate(input$taxa_order), collapse = ", "), " in ", paste(isolate(input$location), collapse = ", "), " measured with ",
-          paste(isolate(input$biodiversity_metric_category), collapse = ", "), " as the biodiversity metric is ", round(coef(custom_model()), digits = 2),
+          paste(shiny::isolate(input$iucn_threat_category)), " type is listed next to each data point. ",
+          "The overall effect size of ", paste(shiny::isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity for ",
+          paste(shiny::isolate(input$taxa_order), collapse = ", "), " in ", paste(shiny::isolate(input$location), collapse = ", "), " measured with ",
+          paste(shiny::isolate(input$biodiversity_metric_category), collapse = ", "), " as the biodiversity metric is ", round(stats::coef(custom_model()), digits = 2),
           ". This equates to a percentage change of ", percentage_change, "%.",
           sep = "")
   })
@@ -429,17 +402,17 @@ server <- function(input, output) {
   # ### Make the table and table legend for custom model
   #
   # # Produce table legend
-  # output$table_legend_custom_model_output <- renderText({
+  # output$table_legend_custom_model_output <- shiny::renderText({
   #
   #   paste("<b>Table 4. </b>", "Model coefficients extracted or calculated from the model summary. Agricultural systems with absolute t-values greater than 1.96
   #         have significantly different levels of biodiversity than the conventional agricultural system (", custom_model_analysis()[1, 13], " data points).", sep = "")
   # })
   #
   # # Produce table
-  # output$custom_model_output_table <- renderTable({
+  # output$custom_model_output_table <- shiny::renderTable({
   #
   #   custom_model_output_table <- custom_ordered_robust_coefficients()[c("Treatment","t", "Adjusted_LRR", "percentage_change", "Frequency")] %>%
-  #     arrange(Adjusted_LRR, desc(Treatment))
+  #     dplyr::arrange(Adjusted_LRR, desc(Treatment))
   #
   #   # Remove as not going to include conventional in table anymore as doesn't make sense - just put number of data points in the legend.
   #   #custom_model_output_table <- rbind(custom_model_analysis()[1, c(1,4,5,9,13)], custom_model_output_table) # Add in row for conventional at the top of table
@@ -475,43 +448,43 @@ server <- function(input, output) {
   })
   
   # Disable the download buttons if the location choice changes
-  observeEvent(input$location, {
+  shiny::observeEvent(input$location, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
     #shinyjs::disable("download_custom_model_coeffs")
   })
   
   # Disable the download buttons if the taxa_order choice changes
-  observeEvent(input$taxa_order, {
+  shiny::observeEvent(input$taxa_order, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
     #shinyjs::disable("download_custom_model_coeffs")
   })
   
   # Disable the download buttons if the biodiversity_metric_category choice changes
-  observeEvent(input$biodiversity_metric_category, {
+  shiny::observeEvent(input$biodiversity_metric_category, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
     #shinyjs::disable("download_custom_model_coeffs")
   })
   
   # Download custom model output (txt file) button
-  output$download_custom_model_output <- downloadHandler(
+  output$download_custom_model_output <- shiny::downloadHandler(
     filename = function() {
-      paste0("custom_model_output", Sys.Date(), ".txt", sep="")
+      paste0("custom_model_output", base::Sys.Date(), ".txt", sep="")
     },
     content = function(file) {
-      write.table(custom_model_summary(), file)
+      utils::write.table(custom_model_summary(), file)
     }
   )
   
   # Download custom model object (rds file) button
-  output$download_custom_model_object <- downloadHandler(
+  output$download_custom_model_object <- shiny::downloadHandler(
     filename = function() {
-      paste0("custom_model_object", Sys.Date(), ".rds", sep="")
+      paste0("custom_model_object", base::Sys.Date(), ".rds", sep="")
     },
     content = function(file) {
-      saveRDS(custom_model(), file)
+      base::saveRDS(custom_model(), file)
     }
   )
   
@@ -521,7 +494,7 @@ server <- function(input, output) {
   #     paste0("custom_model_coefficients", Sys.Date(), ".csv", sep="")
   #   },
   #   content = function(file) {
-  #     write.csv(custom_model_analysis(), file)
+  #     utils::write.csv(custom_model_analysis(), file)
   #   }
   # )
   
@@ -530,22 +503,22 @@ server <- function(input, output) {
   
   ### Details of agricultural systems table which shows once button is clicked, and disappears once hide button is clicked
   
-  # defs_data2 <- reactiveValues() # reactiveValues function returns an object for storing reactive values
+  # defs_data2 <- shiny::reactiveValues() # reactiveValues function returns an object for storing reactive values
   #
-  # observeEvent(input$show2, { # When "show" button is selected, the object stores the agri_systems_def data
+  # shiny::observeEvent(input$show2, { # When "show" button is selected, the object stores the agri_systems_def data
   #   defs_data2$data <- agri_systems_def
   # })
   #
-  # observeEvent(input$hide2, { # When "hide" button is selected, the object stores nothing
+  # shiny::observeEvent(input$hide2, { # When "hide" button is selected, the object stores nothing
   #   defs_data2$data <- NULL
   # })
   #
-  # output$agri_sys_defs_table2 <- renderTable({
-  #   if (is.null(defs_data2$data)) { # If object isn't storing anything, return nothing (i.e. don't show table)
-  #     return()
+  # output$agri_sys_defs_table2 <- shiny::renderTable({
+  #   if (base::is.null(defs_data2$data)) { # If object isn't storing anything, return nothing (i.e. don't show table)
+  #     base::return()
   #   } else { # Else, show the table
   #     agri_systems_def <- agri_systems_def %>%
-  #       arrange(Agricultural_system)
+  #       dplyr::arrange(Agricultural_system)
   #   }
   #
   # },
@@ -553,216 +526,6 @@ server <- function(input, output) {
   # striped = TRUE
   #
   # )
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  # =================================================================================================================
-  # =================================================================================================================
-  
-  ##### Upload data tab
-  
-  # =================================================================================================================
-  # =================================================================================================================
-  
-  ### Overview:
-  # The user has to input their first and second name (containing only letters, spaces, and hyphens to avoid things such as code injection)
-  # Then they can upload their file (as long as it meets checks e.g. is a csv, contains correct columns, is not a duplicate) and preview it
-  # Once previewed, can press submit to googlesheets to upload it to here. Get a completion message if successful.
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  # Disable the browse/upload button on page load - so can't click it until user has inputted acceptable first and second name
-  shinyjs::disable("preview_upload")
-  
-  # Also disable the upload to googlesheets button
-  shinyjs::disable("upload_to_googlesheets")
-  
-  # Enable the browse/upload button if acceptable names have been inputted, otherwise disable it (and disable upload to googlesheets button too)
-  observe({
-    if (input$first_name != "" &&
-        input$second_name != "" &&
-        !str_detect(input$first_name, "[^A-Za-z-\\s]") && # name can only contain letters, hyphens, or spaces
-        !str_detect(input$second_name, "[^A-Za-z-\\s]")) {
-      
-      # enable the browse/upload button
-      shinyjs::enable("preview_upload")
-    } else {
-      shinyjs::disable("preview_upload")
-      shinyjs::disable("upload_to_googlesheets")
-    }
-  })
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  # The following 3 observeEvents hide the output$upload_complete message
-  # (which indicates that a data sheet has been successfully uploaded to googlesheets) if the inputted names or file changes
-  # Also disables the upload_to_googlesheets button
-  
-  observeEvent(input$first_name, {
-    shinyjs::hide("upload_complete")
-    shinyjs::disable("upload_to_googlesheets")
-  })
-  
-  observeEvent(input$second_name, {
-    shinyjs::hide("upload_complete")
-    shinyjs::disable("upload_to_googlesheets")
-  })
-  
-  observeEvent(input$preview_upload, {
-    shinyjs::hide("upload_complete")
-    shinyjs::disable("upload_to_googlesheets")
-  })
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  ### Validation checks on the names inputted which gives feedback to the user
-  # Same as checks which enable the browse button, BUT needed in additional to provide user feedback
-  
-  output$name_inputted <- renderText({
-    
-    validate(
-      
-      # First name must not be empty
-      need(input$first_name != "", "First name must not be empty."),
-      
-      # Second name must not be empty
-      need(input$second_name != "", "Second name must not be empty."),
-      
-      # First_name must only contain letters
-      need(!str_detect(input$first_name, "[^A-Za-z-\\s]"), "First name can only contain letters."), # if contains anything but letters, hyphens, or spaces, it returns FALSE
-      
-      # Second_name must only contain letters
-      need(!str_detect(input$second_name, "[^A-Za-z-\\s]"), "Second name can only contain letters.") # if contains anything but letters, hyphens, or spaces, it returns FALSE
-      
-    )
-    
-    paste("") # return blank message if name meets criteria
-    
-  })
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  # Preview the data to be uploaded to googlesheets and enable upload_to_googlesheets button if certain checks are met
-  output$preview_upload_data <- renderTable({
-    
-    req(input$preview_upload)
-    
-    # Validation checks 1
-    validate(
-      # Make sure file is a csv
-      need(tools::file_ext(input$preview_upload$name) == "csv", "File must be a .csv.")
-    )
-    
-    # If it is a .csv, change blanks to NAs so matches the googlesheet when it is read in
-    new_data <- read.csv(input$preview_upload$datapath)
-    new_data[new_data == ""] <- NA
-    
-    # Validation checks 2
-    validate(
-      # Make sure file has certain columns - these are the columns in Daero's standardised data sheet
-      
-      # Version 1: New data must contain all colnames in standardised sheet, but can also contain extra ones
-      # need(all(colnames(data()) %in% colnames(new_data)), "Data doesn't contain correct column(s).")
-      
-      # Version 2: Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
-      need(all(colnames(data()) == colnames(new_data)), paste("Data doesn't contain correct column(s).\nMissing columns that must be present: ",
-                                                              paste(setdiff(colnames(data()), colnames(new_data)), collapse = ", "),
-                                                              "\nExtra columns that need to be removed: ", paste(setdiff(colnames(new_data), colnames(data())), collapse = ", ")))
-    )
-    
-    # If passes the checks above, also want to check it is not a duplicate of data already in googlesheets
-    # Read in the the sheets present within the googlesheet
-    sheets_names <- sheet_names(sheet_id)
-    
-    # Read each of the sheets and load their data. Puts them into a list of dataframes
-    list_of_data <- lapply(sheets_names, function (x) read_sheet(ss = sheet_id, sheet = x))
-    
-    # Count the number of sheets present
-    number_of_studies <- length(list_of_data)
-    
-    # Check if any of these are identical to the one the user is trying to upload - output needs to only contain FALSE
-    output <- c()
-    if (number_of_studies > 1) {
-      for (i in 1:number_of_studies) {
-        output <- c(output, (isTRUE(all.equal(new_data, as.data.frame(list_of_data[[i]])))))
-      }
-    } else {
-      output <- c(output, isTRUE(all.equal(new_data, as.data.frame(list_of_data[[1]]))))
-    }
-    
-    # Validation checks 3
-    validate(
-      # Make sure file is not a duplicate of one already in the googlesheets
-      need(all(output == FALSE), "This is a duplicate of a dataframe already in existence") # Check if they are all FALSE i.e. no identical dataframes
-    )
-    
-    # Checks needed to enable to upload to googlesheets button - need all checks to be met (inputted name and file)
-    if (input$first_name != "" &&
-        input$second_name != "" &&
-        !str_detect(input$first_name, "[^A-Za-z-\\s]") &&
-        !str_detect(input$second_name, "[^A-Za-z-\\s]") &&
-        tools::file_ext(input$preview_upload$name) == "csv" &&
-        # all(colnames(data()) %in% colnames(read.csv(input$preview_upload$datapath))) &&
-        all(colnames(data()) == colnames(read.csv(input$preview_upload$datapath))) &&
-        all(output == FALSE)) {
-      # enable the browse/upload button
-      shinyjs::enable("upload_to_googlesheets")
-    }
-    
-    # Produce the table
-    preview_upload_data <- head(new_data)
-    
-  },
-  
-  striped = TRUE
-  
-  )
-  
-  # Add table legend
-  output$preview_upload_data_legend <- renderText({
-    
-    req(input$preview_upload)
-    
-    paste("<b>Table 5.</b>", "Preview of your data, which you can upload to the database.")
-  })
-  
-  
-  # ----------------------------------------------------------------------------------------------------------------
-  
-  # Upon acceptable name being entered, and selecting an acceptable file, save it to googlesheets, and return a message if successful
-  
-  observeEvent(input$upload_to_googlesheets, {
-    
-    # Access actual data via datapath column of the dataframe returned by fileInput()
-    data <- read.csv(input$preview_upload$datapath)
-    data[data == ""] <- NA
-    
-    # Create a unique file name
-    file_name <- paste0(input$first_name, "_", input$second_name, "_", as.integer(Sys.time()), sep = "")
-    
-    # Create a filepath using this file_name
-    file_path <- file.path(tempdir(), file_name)
-    
-    # Write the data to a temporary file locally
-    write.csv(data, file_path, row.names = FALSE)
-    
-    # Add new tab to gogglesheet
-    sheet_add(ss = sheet_id, sheet = file_name)
-    
-    # Add new data to this sheet
-    write_sheet(data, ss = sheet_id, sheet = file_name)
-    
-    shinyjs::show("upload_complete")
-    
-    output$upload_complete <- renderText({
-      
-      paste0("File with name: ", input$first_name, " ", input$second_name, " ", input$preview_upload$name, " successfully uploaded.")
-      
-    })
-    
-    shinyjs::disable("upload_to_googlesheets")
-    
-  })
   
   # ----------------------------------------------------------------------------------------------------------------
   
@@ -777,21 +540,20 @@ server <- function(input, output) {
   ### References table
   
   # Add table legend
-  output$references_table_legend <- renderText({
+  output$references_table_legend <- shiny::renderText({
     paste("<b>Table 6.</b>", "References for all papers included in the app.")
   })
   
   # Add references table
-  output$references_table <- renderTable({
+  output$references_table <- shiny::renderTable({
     
     # Keep all columns - not just the Paper_ID
     references_table <- data() %>%
-      distinct(Paper_ID, .keep_all = TRUE)
+      dplyr::distinct(Paper_ID, .keep_all = TRUE)
     
     # Now just include the columns we want, and arrange in alphabetical order
     references_table <- references_table[, c("Author", "Year", "Title", "DOI")] %>%
-      arrange(Author)
-    
+      dplyr::arrange(Author)
     
   },
   
@@ -804,3 +566,5 @@ server <- function(input, output) {
   # =================================================================================================================
   
 }
+
+
