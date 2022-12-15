@@ -9,7 +9,7 @@
 launch_Dynameta <- function() {
   
   # Get app directory 
-  appDir <- base::system.file("inst", "Dynameta_app", package = "Dynameta")
+  appDir <- base::system.file("Dynameta_app", package = "Dynameta")
   
   # Run app
   shiny::runApp(appDir, display.mode = "normal")
