@@ -1,14 +1,26 @@
 # Dynameta shiny app server script
 
+# ---------------------------------------------------------------------------------------------
+
 # Load packages
 library(dplyr) # for data manipulation, part of tidyverse ("%>%" filter arrange relocate distinct)
 library(leaflet) # for mapping (renderLeaflet leaflet addTiles addCircleMarkers)
 library(metafor) # for running meta-analytic models (escalc rma.mv forest)
 library(shiny) # Required to run any Shiny app
-library(shinyjs) # for enabling and disabling download button (enable disable)
+library(shinyjs) # for enabling and disabling download button (enable disable show)
 library(shinyWidgets) # for including a 'select all' option for filters (pickerInput)
 library(tidyr) # for tidying messy data, part of tidyverse (drop_na)
 
+# ---------------------------------------------------------------------------------------------
+
+# Define the 'then' function, so it only returns the 1 error message at a time to the user 
+`%then%` <- function(a, b) {
+  if (is.null(a)) b else a
+}
+
+# ---------------------------------------------------------------------------------------------
+
+# Define the server function
 server <- function(input, output) {
   
   # =================================================================================================================
@@ -21,10 +33,46 @@ server <- function(input, output) {
   
   # -------------------------------------------------------------------------------------
   
-  # Create reactive data object
-  # Data is automatically loaded when the package is loaded
-  data <- reactive({
-    data <- sample_data
+  # User choice of data to analyse
+  shiny::observeEvent(input$data_choice, {
+    
+    # If the user selects "Your own data", then 'show' the upload_data_to_analyse widget 
+    if (input$data_choice == "Your own data") {
+      shinyjs::show("upload_data_to_analyse")
+    } else {
+      shinyjs::hide("upload_data_to_analyse")
+    }
+
+  })
+  
+  # Create reactive data object (sample_data is automatically loaded when the package is loaded)
+  data <- shiny::reactive({
+    
+    # If user has selected to use their own data, and uploaded a dataset, the data is their uploaded data
+    if (input$data_choice == "Your own data" && !is.null(input$upload_data_to_analyse)) {
+      
+      # Checks on data 1 
+      shiny::validate(
+        
+        # 1. Make sure file is a csv
+        shiny::need(tools::file_ext(input$upload_data_to_analyse$name) == "csv", "File must be a .csv.") %then%
+        
+        # 2. Make sure file has certain columns - these are the columns in Daero's standardised data sheet
+        # Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
+        shiny::need(base::all(colnames(sample_data) == colnames(read.csv(input$upload_data_to_analyse$datapath))), 
+                    paste("Data doesn't contain correct column(s).
+                          \nMissing columns that must be present: ",
+                          paste(setdiff(colnames(sample_data), colnames(read.csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
+                          "\nExtra columns that need to be removed: ", 
+                          paste(setdiff(colnames(read.csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
+      )
+      
+      data <- read.csv(input$upload_data_to_analyse$datapath)
+      
+    } else {
+      # If no data uploaded, or selected the sample_data, the data is the sample data
+      data <- sample_data
+    }
   })
   
   # -------------------------------------------------------------------------------------
@@ -164,14 +212,14 @@ server <- function(input, output) {
   })
   
   # Total number of data points
-  total_data_points <- reactive({
+  total_data_points <- shiny::reactive({
     
     nrow(data())
     
   })
   
   # Number of data points with co-ordinates available
-  data_with_coords <- reactive({
+  data_with_coords <- shiny::reactive({
     
     data_with_coords <- total_data_points() - (sum(is.na(data()$Longitude) | data()$Longitude == "."))
     
@@ -323,7 +371,7 @@ server <- function(input, output) {
   
   # Custom model summary
   
-  custom_model_summary <- reactive({
+  custom_model_summary <- shiny::reactive({
     
     shiny::req(custom_model())
     

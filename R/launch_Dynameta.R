@@ -12,6 +12,9 @@ launch_Dynameta <- function() {
   appDir <- base::system.file("Dynameta_app", package = "Dynameta")
   
   # To test app before pushing to git:
+  # Load sample data
+  #data(sample_data)
+  # Run app
   #runApp("inst/Dynameta_app/", display.mode = "normal")
   
   # Run app

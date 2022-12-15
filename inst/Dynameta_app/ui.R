@@ -6,7 +6,7 @@ library(leaflet) # for mapping (leafletOutput)
 library(shiny)
 library(shinycssloaders) # for loading symbols (while models run) (withSpinner)
 library(shinydisconnect) # for displaying nice error message if whole shiny app disconnects (disconnectMessage)
-library(shinyjs) # for enabling and disabling download button (useShinyjs)
+library(shinyjs) # for enabling and disabling download button (useShinyjs hidden)
 
 ui <- shiny::navbarPage(
   
@@ -103,6 +103,44 @@ ui <- shiny::navbarPage(
            # link to code
            p(h5(shiny::icon("github", lib = "font-awesome", "fa-2x"), # add-in github icon
                 tags$a(href="https://github.com/gls21/insect_biodiversity_meta_analytic_shiny_app", "View app source code"))),  ######### Change once repo is public
+           
+           tags$br(),
+           tags$hr(),
+           
+           # ----------------------------------------------------------------------------------------------------------------------
+           
+           ### User choice of what data to analyse - sample or their own
+           
+           p(h3("Choose data to analyse.")),
+           
+           shiny::fluidRow(
+             
+             shiny::column(
+               6,
+               
+               # Include user input of choice of data
+               h5(shiny::radioButtons(inputId = "data_choice",
+                                      label = "Do you want to investigate the sample data provided with the package or upload your own data to analyse?",
+                                      choices = c("Sample data", "Your own data"),
+                                      inline = TRUE, # put options side by side
+                                      selected = "Sample data", # Start with no items initially selected
+                                      width = "100%")) # So it puts label on one line, not split it across multiple
+        
+             ),
+             
+             shiny::column(
+               6,
+               
+               # Input where user can upload data - hidden to start with
+               useShinyjs(), # set up shinyjs
+               h5(shinyjs::hidden(shiny::fileInput(inputId = "upload_data_to_analyse",
+                                                   label = "Choose dataset (.csv) to upload",
+                                                   accept = ".csv")))
+               
+               
+             )
+             
+           ), 
            
            tags$br(),
            tags$hr(),
