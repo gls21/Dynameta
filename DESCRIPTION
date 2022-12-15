@@ -2,7 +2,7 @@ Package: Dynameta
 Title: A dynamic platform for ecological meta-analyses in R Shiny
 Version: 0.0.0.9000
 Authors@R: person("Grace", "Skinner", email = "GraSki@ceh.ac.uk",
-    role = c("aut", "cre")
+    role = c("aut", "cre"))
 Description: A living-review (continually updateable) R Shiny platform for
     interactive ecological meta-analyses, oriented around testing the
     effect of anthropogenic threats on biodiversity. This platform is
@@ -18,7 +18,6 @@ Depends:
     R (>= 2.10)
 Imports: 
     bslib,
-    devtools,
     dplyr,
     leaflet,
     metafor,
@@ -31,4 +30,4 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
