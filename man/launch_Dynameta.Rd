@@ -14,5 +14,4 @@ Launches the Dynameta shiny app
 }
 \examples{
 \dontrun{launch_Dynameta()}
-
 }
