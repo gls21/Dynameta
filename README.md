@@ -39,10 +39,12 @@ View sample data included in the package
 sample_data()
 ```
 
+<br> 
+
 Process for using the Dynameta app:
 * Once the app has opened in your browser, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse.
 * If you select 'Your own data', you will then be given the option to upload a file (.csv). ???Needs to contain certain columns???
-* The 'Introduction' tab provides a breakdown of the data, including details of which papers investigated which IUCN threat, and a map indicating where each data point originated from. 
+* The 'Introduction' tab provides a breakdown of the data, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from. 
 * To run meta-analytic models, go to the 'Run models' tab
 * Based on your interests, filter the data by IUCN threat, location, taxonomic order, or biodiversity metric the data was collected with. Then click 'Run custom model'.
 * Dynameta will run a metafor meta-analytic model and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
