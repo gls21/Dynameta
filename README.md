@@ -1,5 +1,7 @@
 # Dynameta: A dynamic platform for ecological meta-analyses in R Shiny
 
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+
 ***
 
 ## Introduction
@@ -80,3 +82,7 @@ Process for using the Dynameta app:
 <br>
 
 <img src="https://www.ceh.ac.uk/sites/default/files/images/theme/ukceh_logo_long_720x170_rgb.png" width="25%" height="25%"> <img src="inst/images/GLiTRS_logo.png" width="10%" height="10%">
+
+<br>
+
+This project is licensed under the terms of the MIT license.
