@@ -4,7 +4,16 @@
 
 ***
 
-## Introduction
+## Table of contents
+1. [Introduction](#introduction)
+2. [Installing and using the package](#installing-and-using-the-package)
+3. [Repo structure](#repo-structure)
+4. [Author name and contact ](#author-name-and-contact)
+
+<br>
+
+<a name="introduction"></a>
+## Introduction 
 Dynameta was developed as part of the [GLiTRS project](https://glitrs.ceh.ac.uk/), a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change. 
 
 Dynameta is a living-review (i.e. continually updateable) R Shiny platform written as an R package. This means the app can be launched by running the launch_Dynameta() function included in the R package.
@@ -13,7 +22,8 @@ Dynameta was designed for interactive ecological meta-analyses, oriented around 
 
 <br>
 
-## Installing and using the package
+<a name="installing-and-using-the-package"></a>
+## Installing and using the package 
 Installing the package requires devtools, which can be installed and loaded by running the following code in the R console:
 ```
 install.packages("devtools")
@@ -55,6 +65,7 @@ Process for using the Dynameta app:
 
 <br>
 
+<a name="repo-structure"></a>
 ## Repo structure 
 * R
     * launch_Dynameta.R - defines the function that can be used to launch the Dynameta app
@@ -75,6 +86,7 @@ Process for using the Dynameta app:
 
 <br>
 
+<a name="author-name-and-contact"></a>
 ## Author name and contact 
 * Grace Skinner (Research Associate Data Scientist at UKCEH)
 * GraSki@ceh.ac.uk
