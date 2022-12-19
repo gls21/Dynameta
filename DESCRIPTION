@@ -11,7 +11,7 @@ Description: A living-review (continually updateable) R Shiny platform for
     the effect of any IUCN threat on any taxonomic group, biodiversity
     metric, or geographic region. Analyse sample data included in the
     package or your own data.
-License: use_mit_license()
+License: MIT + file LICENSE
 URL: https://github.com/gls21/Dynameta
 BugReports: https://github.com/gls21/Dynameta/issues
 Depends: 
