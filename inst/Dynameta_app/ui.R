@@ -102,7 +102,7 @@ ui <- shiny::navbarPage(
            
            # link to code
            p(h5(shiny::icon("github", lib = "font-awesome", "fa-2x"), # add-in github icon
-                tags$a(href="https://github.com/gls21/insect_biodiversity_meta_analytic_shiny_app", "View app source code"))),  ######### Change once repo is public
+                tags$a(href="https://github.com/gls21/Dynameta", "View app source code"))),  ######### Repo not yet public so won't work
            
            tags$br(),
            tags$hr(),
