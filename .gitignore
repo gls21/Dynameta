@@ -16,3 +16,6 @@
 /Dynameta.Rproj
 
 # ---------------------------------------------------------------------------------------------------------
+
+# Added automatically when ran usethis::use_vignette("Dynameta-vignette")
+inst/doc
