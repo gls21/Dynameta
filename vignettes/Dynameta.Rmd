@@ -42,19 +42,36 @@ as_tibble(sample_data)
 
 ## Launch the Dynameta Shiny app
 To launch a local instance of the Dynameta Shiny app, run the following code:
+<br>
 N.B. The function takes no arguments.
-```{r, echo = FALSE}
+<br>
+The following code is not executed here as it prevents the document from knitting. 
+```{r, eval = FALSE}
 Dynameta::launch_Dynameta()
 ```
 
 ## Process for using the Dynameta app
+### 1. Introduction tab
 * Once the app has opened in your browser, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse.
 * If you select 'Your own data', you will then be given the option to upload a file (.csv). ???Needs to contain certain columns???
 * The 'Introduction' tab provides a breakdown of the data, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.
+
+![](../inst/images/intro_tab.PNG){width=150% height=150%}
+
+### 2. Run models tab
 * To run meta-analytic models, go to the 'Run models' tab.
 * Based on your interests, filter the data by IUCN threat, location, taxonomic order, or biodiversity metric the data was collected with. Then click 'Run custom model'.
+
+![](../inst/images/run_models_tab_choose_filters.PNG){width=150% height=150%}
+
 * Dynameta will run a metafor meta-analytic model and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
-* You are able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
+* You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
+
+![](../inst/images/run_models_tab_forest_plot.PNG){width=150% height=150%}
+
+### 3. References tab 
 * View full paper details using the 'References' tab.
+
+![](../inst/images/references_tab.PNG){width=150% height=150%}
 
 
