@@ -605,9 +605,9 @@ server <- function(input, output) {
     scrollX = TRUE, # allow scrolling if too wide to fit all columns on one page
     autoWidth = TRUE, # use smart column width handling
     pageLength = 5, # show 5 entries per page
-    headerCallback = DT::JS( # use this to increase the font size of the column names
+    headerCallback = DT::JS( # use this to alter the font size of the column names
       "function(thead) {",
-      "  $(thead).css('font-size', '1.5em');",
+      "  $(thead).css('font-size', '1em');",
       "}"
     )),
   
