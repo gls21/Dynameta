@@ -4,6 +4,7 @@
 
 # Load packages
 library(dplyr) # for data manipulation, part of tidyverse ("%>%" filter arrange relocate distinct)
+library(DT) # for interactive tables
 library(leaflet) # for mapping (renderLeaflet leaflet addTiles addCircleMarkers)
 library(metafor) # for running meta-analytic models (escalc rma.mv forest)
 library(shiny) # Required to run any Shiny app
@@ -588,7 +589,7 @@ server <- function(input, output) {
   })
   
   # Add references table
-  output$references_table <- shiny::renderTable({
+  output$references_table <- DT::renderDT({
     
     # Keep all columns - not just the Paper_ID
     references_table <- data() %>%
@@ -600,9 +601,18 @@ server <- function(input, output) {
     
   },
   
-  digits = 0,
-  striped = TRUE
+  options = list(
+    scrollX = TRUE, # allow scrolling if too wide to fit all columns on one page
+    autoWidth = TRUE, # use smart column width handling
+    pageLength = 5, # show 5 entries per page
+    headerCallback = DT::JS( # use this to increase the font size of the column names
+      "function(thead) {",
+      "  $(thead).css('font-size', '1.5em');",
+      "}"
+    )),
   
+  rownames = FALSE # stops it adding column for row numbers
+    
   )
   
   # =================================================================================================================

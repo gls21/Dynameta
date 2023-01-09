@@ -1,7 +1,8 @@
 # Dynameta shiny app ui script
 
 # Load packages
-library(bslib) # For themes to customise appearance of shiny app (bs_theme bs_add_variables font_link)
+library(bslib) # for themes to customise appearance of shiny app (bs_theme bs_add_variables font_link)
+library(DT) # for interactive tables
 library(leaflet) # for mapping (leafletOutput)
 library(shiny)
 library(shinycssloaders) # for loading symbols (while models run) (withSpinner)
@@ -444,9 +445,11 @@ ui <- shiny::navbarPage(
            
            # Include table legend for references table
            h5(shiny::htmlOutput("references_table_legend")),
-           
+
+           tags$br(),
+
            # add paper details table
-           h5(shinycssloaders::withSpinner(shiny::tableOutput("references_table"), type = 8)),
+           h5(shinycssloaders::withSpinner(DT::DTOutput("references_table"), type = 8)),
            
            tags$br()
            

@@ -19,6 +19,7 @@ Depends:
 Imports: 
     bslib,
     dplyr,
+    DT,
     leaflet,
     metafor,
     shiny,
