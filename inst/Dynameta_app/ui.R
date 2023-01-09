@@ -73,7 +73,7 @@ ui <- shiny::navbarPage(
            # ----------------------------------------------------------------------------------------------------------------------
            
            # Pre-amble
-           p(h1(tags$b("An interactive platform for insect biodiversity meta-analyses"))),
+           p(h1(tags$b("Dynameta - An interactive platform for insect biodiversity meta-analyses"))),
            
            tags$br(),
            
