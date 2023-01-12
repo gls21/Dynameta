@@ -1,6 +1,7 @@
-# Dynameta: A dynamic platform for ecological meta-analyses in R Shiny
+# Dynameta: A dynamic platform for ecological meta-analyses in R Shiny <img src="inst/images/Dynameta_hex_sticker.png" width="7.5%" height="7.5%" align="right">
 
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+
 
 ***
 

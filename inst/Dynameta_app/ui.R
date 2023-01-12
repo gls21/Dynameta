@@ -98,7 +98,7 @@ ui <- shiny::navbarPage(
                   h5(tags$ol(
                     tags$li("Use this 'Introduction' to investigate the data sources used within the app."),
                     tags$li("Go to 'Run models' to run models to investigate the effect of different threats on biodiversity."),
-                    tags$li("Go to 'Upload data' to upload data from your own meta-analysis.")
+                    tags$li("Go to 'References' to view full details of the papers that contribute data to your analysis.")
                   )),
 
                   # link to code
@@ -224,7 +224,7 @@ ui <- shiny::navbarPage(
                   p(h2(tags$b("Run models"))),
 
                   p(h5("Use this tab to investigate how different threats impact biodiversity.
-                The models run are metafor multivariate meta-analysis (rma.mv()) models.
+                The models run are metafor multilevel meta-analysis (rma.mv()) models.
                 The effect size used is ROM (log transformed Ratio Of Means / log response ratio)).
                 You are able to filter the data based on threat, location, taxonomic order, and biodiversity metric.")),
 
