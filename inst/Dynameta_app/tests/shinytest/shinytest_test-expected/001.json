@@ -1,0 +1,326 @@
+{
+  "input": {
+    "data_choice": "Sample data",
+    "map_bounds": {
+      "north": 84.1249731939109,
+      "east": 220.078125,
+      "south": -73.6277887933994,
+      "west": -165.9375
+    },
+    "map_center": [
+      27.4219,
+      28.3044
+    ],
+    "map_zoom": 1,
+    "run_custom_model": 0,
+    "threat": "",
+    "upload_data_to_analyse": null
+  },
+  "output": {
+    "map": {
+      "x": {
+        "options": {
+          "crs": {
+            "crsClass": "L.CRS.EPSG3857",
+            "code": null,
+            "proj4def": null,
+            "projectedBounds": null,
+            "options": {
+
+            }
+          }
+        },
+        "calls": [
+          {
+            "method": "addTiles",
+            "args": [
+              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              null,
+              null,
+              {
+                "minZoom": 0,
+                "maxZoom": 18,
+                "tileSize": 256,
+                "subdomains": "abc",
+                "errorTileUrl": "",
+                "tms": false,
+                "noWrap": false,
+                "zoomOffset": 0,
+                "zoomReverse": false,
+                "opacity": 1,
+                "zIndex": 1,
+                "detectRetina": false,
+                "attribution": "&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"
+              }
+            ]
+          },
+          {
+            "method": "addCircleMarkers",
+            "args": [
+              [
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.5166667,
+                43.62565632,
+                43.62565632,
+                -2.470739181,
+                -2.470739181,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                36.0333333,
+                10.95062439,
+                10.95062439,
+                10.95062439,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                36.76391212,
+                10.9893306,
+                10.9893306,
+                52.15706948,
+                52.15706948,
+                52.15706948,
+                36.89729994,
+                36.89729994
+              ],
+              [
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.666666667,
+                4.546589667,
+                4.546589667,
+                33.40746546,
+                33.40746546,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                140.1166667,
+                79.77963034,
+                79.77963034,
+                79.77963034,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                139.8374725,
+                -85.44250278,
+                -85.44250278,
+                4.484908588,
+                4.484908588,
+                4.484908588,
+                136.794043,
+                136.794043
+              ],
+              10,
+              null,
+              null,
+              {
+                "interactive": true,
+                "className": "",
+                "stroke": true,
+                "color": "#03F",
+                "weight": 5,
+                "opacity": 0.5,
+                "fill": true,
+                "fillColor": "#03F",
+                "fillOpacity": 0.2
+              },
+              {
+                "showCoverageOnHover": true,
+                "zoomToBoundsOnClick": true,
+                "spiderfyOnMaxZoom": true,
+                "removeOutsideVisibleBounds": true,
+                "spiderLegPolylineOptions": {
+                  "weight": 1.5,
+                  "color": "#222",
+                  "opacity": 0.5
+                },
+                "freezeAtZoom": false,
+                "spiderfyDistanceMultiplier": 1.5
+              },
+              null,
+              null,
+              null,
+              [
+                "Suhling 2000 1",
+                "Suhling 2000 2",
+                "Suhling 2000 3",
+                "Suhling 2000 4",
+                "Suhling 2000 5",
+                "Suhling 2000 6",
+                "Suhling 2000 7",
+                "Suhling 2000 8",
+                "Suhling 2000 9",
+                "Suhling 2000 10",
+                "Suhling 2000 11",
+                "Mesléard 2005 1",
+                "Mesléard 2005 2",
+                "Martins 2009 1",
+                "Martins 2009 2",
+                "Hayasaka 2012 1",
+                "Hayasaka 2012 2",
+                "Hayasaka 2012 3",
+                "Hayasaka 2012 4",
+                "Hayasaka 2012 5",
+                "Hayasaka 2012 6",
+                "Hayasaka 2012 7",
+                "Hayasaka 2012 8",
+                "Soniyagandhi 2014 1",
+                "Soniyagandhi 2014 2",
+                "Jakob 2016 1",
+                "Baba 2019 1",
+                "Baba 2019 2",
+                "Baba 2019 3",
+                "Baba 2019 4",
+                "Baba 2019 5",
+                "Baba 2019 6",
+                "Baba 2019 7",
+                "Baba 2019 8",
+                "Baba 2019 9",
+                "Baba 2019 10",
+                "Baba 2019 11",
+                "Baba 2019 12",
+                "Baba 2019 13",
+                "Baba 2019 14",
+                "Weathered 2019 1",
+                "Weathered 2019 2",
+                "Barmentlo 2021 1",
+                "Barmentlo 2021 2",
+                "Barmentlo 2021 3",
+                "Huynh 2021 1",
+                "Huynh 2021 2"
+              ],
+              {
+                "interactive": false,
+                "permanent": false,
+                "direction": "auto",
+                "opacity": 1,
+                "offset": [
+                  0,
+                  0
+                ],
+                "textsize": "15px",
+                "textOnly": false,
+                "className": "",
+                "sticky": true
+              },
+              null
+            ]
+          }
+        ],
+        "limits": {
+          "lat": [
+            -2.470739181,
+            52.15706948
+          ],
+          "lng": [
+            -85.44250278,
+            140.1166667
+          ]
+        }
+      },
+      "evals": [
+
+      ],
+      "jsHooks": [
+
+      ],
+      "deps": [
+        {
+          "name": "leaflet-markercluster",
+          "version": "1.0.5",
+          "src": {
+            "href": "leaflet-markercluster-1.0.5"
+          },
+          "meta": null,
+          "script": [
+            "leaflet.markercluster.js",
+            "leaflet.markercluster.freezable.js",
+            "leaflet.markercluster.layersupport.js"
+          ],
+          "stylesheet": [
+            "MarkerCluster.css",
+            "MarkerCluster.Default.css"
+          ],
+          "head": null,
+          "attachment": null,
+          "all_files": true
+        }
+      ]
+    },
+    "map_figure_legend": "<b>Figure 1.<\/b> Map providing geographic representativeness of data included in this app based on latitude and longitude co-ordinates.\n          Currently, 47 out of 47 data points have co-ordinates provided to enable them to be plotted.<br>\n          Often, data points are recorded with the same co-ordinates. Zoom in on (or click on) a cluster to explore the map.\n          When you reach a zoom where a cluster represents data points all collected at the same location,\n          you can hover your mouse over the points to see which study they were collected during.",
+    "reactive_threat": {
+      "html": "<div class=\"form-group shiny-input-container\">\n  <label class=\"control-label\" id=\"threat-label\" for=\"threat\">Select threat to show more details for:<\/label>\n  <div>\n    <select id=\"threat\"><option value=\"\" selected><\/option>\n<option value=\"9 Pollution\">9 Pollution<\/option><\/select>\n    <script type=\"application/json\" data-for=\"threat\">{\"plugins\":[\"selectize-plugin-a11y\"]}<\/script>\n  <\/div>\n<\/div>",
+      "deps": [
+        {
+          "name": "selectize",
+          "version": "0.12.4",
+          "src": {
+            "href": "selectize-0.12.4"
+          },
+          "meta": null,
+          "script": [
+            "selectize.min.js",
+            "selectize-plugin-a11y.min.js"
+          ],
+          "stylesheet": "selectize.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "sample_sizes_overview": "<table  class = 'table shiny-table table-striped spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: left;'> Threat category <\/th> <th style='text-align: right;'> Number of papers <\/th> <th style='text-align: right;'> Total data points <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td> 9 Pollution <\/td> <td align=\"right\">  10 <\/td> <td align=\"right\">  47 <\/td> <\/tr>\n   <\/tbody> <\/table>",
+    "table_legend_overview": "<b>Table 1.<\/b> Total number of papers and data points available to investigate each threat category.",
+    "table_legend_threat_details": "<b>Table 2. <\/b>Details on the papers that studied . For full paper details, see the References tab.",
+    "threat_details_table": "<table  class = 'table shiny-table table-striped spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: left;'> Paper <\/th> <th style='text-align: right;'> Number of data points <\/th>  <\/tr> <\/thead> <tbody>\n  <\/tbody> <\/table>"
+  },
+  "export": {
+
+  }
+}
