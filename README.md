@@ -1,6 +1,8 @@
 # Dynameta: A dynamic platform for ecological meta-analyses in R Shiny <img src="inst/images/Dynameta_hex_sticker.png" width="15%" height="15%" align="right">
 
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) <!-- badges: start -->
+  [![R-CMD-check](https://github.com/gls21/Dynameta/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gls21/Dynameta/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 
 ***
