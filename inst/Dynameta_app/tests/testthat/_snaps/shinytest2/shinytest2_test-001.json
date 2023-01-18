@@ -2,16 +2,16 @@
   "input": {
     "data_choice": "Sample data",
     "map_bounds": {
-      "north": 84.1249731939109,
-      "east": 220.078125,
-      "south": -73.6277887933994,
-      "west": -165.9375
+      "north": 70.1403642720717,
+      "east": 208.125,
+      "south": -37.7185903255881,
+      "west": -153.6328125
     },
-    "map_center": [
-      27.4219,
-      28.3044
-    ],
-    "map_zoom": 1,
+    "map_center": {
+      "lng": 27.24609375,
+      "lat": 28.3043806829628
+    },
+    "map_zoom": 2,
     "run_custom_model": 0,
     "threat": "",
     "upload_data_to_analyse": null
