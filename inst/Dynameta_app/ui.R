@@ -65,8 +65,8 @@ ui <- shiny::navbarPage(
                   tags$head(
                     tags$style(
                       HTML(".navbar-nav > li > a {
-                font-size: 30px;
-              }")
+                      font-size: 30px;
+                      }")
                     )
                   ),
 
@@ -74,36 +74,40 @@ ui <- shiny::navbarPage(
                   # ----------------------------------------------------------------------------------------------------------------------
 
                   # Pre-amble
-                  p(h1(tags$b("Dynameta - An interactive platform for insect biodiversity meta-analyses"))),
+                  p(h1(tags$b("Dynameta - A dynamic platform for ecological meta-analyses"))),
 
                   tags$br(),
+                  
+                  p(h5("Meta-analyses are used to quantitatively summarise evidence across studies in a systematic process. Their larger 
+                  sample size (and hence power) compared to individual research studies increases the chance of detecting significant effects.")),
 
-                  p(h5("Insects are a highly diverse taxa and provide vital ecological services, though their underrepresentation in research compared to vertebrates
-                results in a knowledge gap of insect biodiversity change and its drivers.")),
+                  p(h5("Despite representing a significant improvement upon individual studies, meta-analyses have a number of limitations 
+                  which Dynameta was developed to overcome:")),
+                  
+                  h5(tags$ol(
+                    tags$li("Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform, 
+                            Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available."),
+                    tags$li("Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers.
+                            On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers 
+                            through manipulation of the graphical user interface.")
+                  )),
 
-                  p(h5("This app is designed to best utilise the insect biodiversity data available by allowing users to interactively run meta-meta-analytic models,
-                which involves analysing multiple meta-analytic studies together by combining effect sizes for each of these.")),
-
-                  p(h5("Data is taken from a database containing a collection of meta-analytic studies, described as a 'living' database
-                due to the ability of users to upload new data from their own meta-analyses.")),
-
-                  p(h5("The app can be used to investigate the effect of threats (based on ",
-                       tags$a(href="https://www.iucnredlist.org/resources/threat-classification-scheme", "IUCN threats classification scheme)"),
-                       " on biodiversity in terms of the log response ratio (quantifies proportionate change between treatments).
-                You can filter the data by threat, location, taxonomic order, and biodiversity metric.")),
+                  p(h5("Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats 
+                  (based on the ", tags$a(href="https://www.iucnredlist.org/resources/threat-classification-scheme", "IUCN threats classification scheme", .noWS = "outside"),
+                  ") on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts.")),
 
                   p(h5("The app is split into 3 main sections:")),
 
-                  # Make bullet point list of the descriptions of the 3 main tabs
                   h5(tags$ol(
-                    tags$li("Use this 'Introduction' to investigate the data sources used within the app."),
-                    tags$li("Go to 'Run models' to run models to investigate the effect of different threats on biodiversity."),
+                    tags$li("Use this 'Introduction' to choose data to analyse and investigate the data. The sample data is selected by default
+                            and consists of data collected to test the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) biodiversity."),
+                    tags$li("Go to 'Run models' to run custom meta-analytic models to investigate the effect of threats on biodiversity."),
                     tags$li("Go to 'References' to view full details of the papers that contribute data to your analysis.")
                   )),
 
                   # link to code
                   p(h5(shiny::icon("github", lib = "font-awesome", "fa-2x"), # add-in github icon
-                       tags$a(href="https://github.com/gls21/Dynameta", "View app source code"))),  ######### Repo not yet public so won't work
+                       tags$a(href="https://github.com/gls21/Dynameta", "View app source code"))),  
 
                   tags$br(),
                   tags$hr(),
@@ -138,7 +142,6 @@ ui <- shiny::navbarPage(
                                                           label = "Choose dataset (.csv) to upload",
                                                           accept = ".csv")))
 
-
                     )
 
                   ),
@@ -152,7 +155,7 @@ ui <- shiny::navbarPage(
 
                   p(h2(tags$b("Introduction"))),
 
-                  p(h3("Use this tab to investigate the data sources used within this app.")),
+                  p(h3("Use this tab to investigate your data.")),
 
                   tags$hr(),
 
@@ -223,10 +226,15 @@ ui <- shiny::navbarPage(
                   # Title to show at top of tab
                   p(h2(tags$b("Run models"))),
 
-                  p(h5("Use this tab to investigate how different threats impact biodiversity.
-                The models run are metafor multilevel meta-analysis (rma.mv()) models.
-                The effect size used is ROM (log transformed Ratio Of Means / log response ratio)).
-                You are able to filter the data based on threat, location, taxonomic order, and biodiversity metric.")),
+                  p(h5("Use this tab to investigate how different threats impact biodiversity.")),
+                  
+                  p(h5("The models are multilevel meta-analytic models, run using the metafor package. The models account for the non-independence 
+                  of the data by specifying paper and observation identification as nested random effects.")),
+                  
+                  p(h5("The effect size used to compare biodiversity is the log transformed Ratio Of Means (ROM) (also known as the log response ratio),
+                  which quantifies proportionate change between treatments.")),
+                  
+                  p(h5("Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric.")),
 
                   tags$br(),
                   tags$hr(),
@@ -239,9 +247,8 @@ ui <- shiny::navbarPage(
 
                   # ===========================================================================================================
 
-                  h5("Use this section to filter the data you are interested in based on the criteria below.
-              Once you have made your selections, click 'Run custom model'. The model should take less than a minute to run,
-              and then you will be able to view a figure of the results."),
+                  h5("Use this section to filter the data. Once you have made your selections, click 'Run custom model'. 
+                  The model runs in real-time and the results are presented as a forest plot."),
 
                   tags$br(),
 
@@ -332,55 +339,21 @@ ui <- shiny::navbarPage(
 
                   # --------------------------------------------------------------------------------------------------
 
-                  # User input on figure - plot all comparisons or subgroups?
+                  # Add buttons for downloading custom model results
 
-                  p(h5("Use this section to choose which graph to plot.")),
-
-                  # shiny::fluidRow(
-                  #
-                  #   shiny::column(
-                  #     12,
-                  #
-                  #     # user choice of metric
-                  #     h5(shiny::radioButtons(inputId = "metric2",
-                  #                     label = "Select metric:",
-                  #                     choices = c("Adjusted LRR", "Percentage change"),
-                  #                     selected = "Adjusted LRR")
-                  #
-                  #     ))
-                  #
-                  # ),
-
-                  tags$br(),
-                  tags$hr(),
-
-                  # --------------------------------------------------------------------------------------------------
-
-                  # Click to see descriptions of threats???? and put buttons for downloading custom model results
-
-                  p(h5("Use this section to view definitions of the ???, and download the results.")),
+                  p(h5("Use this section to download the results.")),
 
                   p(h5(tags$ul(
                     tags$li("Click 'Download R custom model summary' to download a .txt file containing the output of the summary() function
-                applied to the custom model object. This provides a results summary of the model fitting."),
-                    tags$li("Click 'Download R custom model object' to download a .rds file containing the model object. This has additional
-                     attributes attached, which specify the date and time the model was run, the filters that were applied to the data prior to running the model,
-                     and the R session information. Once downloaded to your workspace, the object can be loaded with the readRDS() function, and its
-                     attributes can be viewed using the attributes() function. By downloading the model object, it allows the same analysis to be repeated
-                     at a later date (perhaps after more data has been uploaded to the app). ")
+                            applied to the custom model object. This provides a results summary of the model fitting."),
+                    tags$li("Click 'Download R custom model object' to download a .rds file containing the model object. 
+                            This has additional attributes attached, which specify the date and time the model was run,
+                            the filters that were applied, and the R session information. Once downloaded,
+                            use the readRDS() and attributes() functions to load the model object and view its attributes.
+                            By downloading, it allows the same analysis to be repeated at a later date (perhaps after more data has become available).")
                   ))),
 
                   shiny::fluidRow(
-
-                    # shiny::column(
-                    #   3,
-                    #   shiny::actionButton("show2", "Click to see definitions of agricultural systems", style='font-size:125%')
-                    # ),
-                    #
-                    # shiny::column(
-                    #   3,
-                    #   shiny::actionButton("hide2", "Hide", style='font-size:125%')
-                    # ),
 
                     shiny::column(
                       6,
@@ -406,26 +379,10 @@ ui <- shiny::navbarPage(
 
                     )
 
-                    # shiny::column(
-                    #   3,
-                    #
-                    #   # download button for downloading table of coefficients
-                    #   shiny::downloadButton(outputId = "download_custom_model_coeffs",
-                    #                  label = "Download custom model table of coefficients",
-                    #                  style='font-size:125%')
-                    # ),
-
-
                   ),
 
                   tags$br(),
                   tags$br()
-
-                  # fluidRow(
-                  #
-                  #   h5(tableOutput("agri_sys_defs_table2"))
-                  #
-                  # )
 
   ), # close modelling tab
 
