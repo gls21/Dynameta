@@ -100,10 +100,13 @@ ui <- shiny::navbarPage(
 
                   h5(tags$ol(
                     tags$li("Use this 'Introduction' to choose data to analyse and investigate the data. The sample data is selected by default
-                            and consists of data collected to test the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) biodiversity."),
+                            and consists of data collected to test the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) abundance"),
                     tags$li("Go to 'Run models' to run custom meta-analytic models to investigate the effect of threats on biodiversity."),
                     tags$li("Go to 'References' to view full details of the papers that contribute data to your analysis.")
                   )),
+                  
+                  p(h5("Dynameta was developed as part of the ", tags$a(href="https://glitrs.ceh.ac.uk/", "GLiTRS"), "project, a cross-institutional consortium aiming to build
+                  global threat-response models to better understand and predict insect biodiversity change.")),
 
                   # link to code
                   p(h5(shiny::icon("github", lib = "font-awesome", "fa-2x"), # add-in github icon
@@ -228,7 +231,7 @@ ui <- shiny::navbarPage(
 
                   p(h5("Use this tab to investigate how different threats impact biodiversity.")),
                   
-                  p(h5("The models are multilevel meta-analytic models, run using the metafor package. The models account for the non-independence 
+                  p(h5("The models are multilevel meta-analytic models, run using the ", tags$a(href="https://www.metafor-project.org/doku.php/metafor", "metafor"), " package. The models account for the non-independence 
                   of the data by specifying paper and observation identification as nested random effects.")),
                   
                   p(h5("The effect size used to compare biodiversity is the log transformed Ratio Of Means (ROM) (also known as the log response ratio),

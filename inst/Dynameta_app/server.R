@@ -488,7 +488,7 @@ server <- function(input, output) {
   
   # Add table legend
   output$references_table_legend <- shiny::renderText({
-    paste("<b>Table 6.</b>", "References for all papers that contribute data to the analysis.")
+    paste("<b>Table 3.</b>", "References for all papers that contribute data to the analysis.")
   })
   
   # Add references table

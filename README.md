@@ -9,24 +9,31 @@
 
 ## Table of contents
 1. [Introduction](#introduction)
-2. [Installing and using the package](#installing-and-using-the-package)
-3. [Repo structure](#repo-structure)
-4. [Author name and contact ](#author-name-and-contact)
+2. [Installing and using the Dynameta package](#installing-and-using-the-dynameta-package)
+3. [Using the Dynameta Shiny app](#using-the-dynameta-shiny-app)
+4. [Repo structure](#repo-structure)
+5. [Author name and contact ](#author-name-and-contact)
 
 <br>
 
 <a name="introduction"></a>
 ## Introduction 
-Dynameta was developed as part of the [GLiTRS project](https://glitrs.ceh.ac.uk/), a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change. 
+Dynameta is an [R Shiny](https://shiny.rstudio.com/) platform written as an R package. This means the app can be launched by running the launch_Dynameta() function included in the R package. The Dynameta app can then be used to run interactive meta-analytic models. 
 
-Dynameta is a living-review (i.e. continually updateable) R Shiny platform written as an R package. This means the app can be launched by running the launch_Dynameta() function included in the R package.
+Meta-analyses are used to quantitatively summarise evidence across studies in a systematic process. Their larger sample size (and hence power) compared to individual research studies increases the chance of detecting significant effects.
 
-Dynameta was designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats on biodiversity. The platform is highly generalisable, such that it can be applied in the context of any meta-analytic PICO question concerning the effect of any IUCN threat on any taxonomic group, biodiversity metric, or geographic region. Our hope is that such software can help encourage the broader adoption of dynamic living reviews in ecology.
+Despite representing a significant improvement upon individual studies, meta-analyses have a number of limitations which Dynameta was developed to overcome:
+1. Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available.
+2. Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.
+
+Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. Here on github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
+
+Dynameta was developed as part of the [GLiTRS](https://glitrs.ceh.ac.uk/) project, a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change.
 
 <br>
 
-<a name="installing-and-using-the-package"></a>
-## Installing and using the package 
+<a name="installing-and-using-the-dynameta-package"></a>
+## Installing and using the Dynameta package 
 Installing the package requires devtools, which can be installed and loaded by running the following code in the R console:
 ```
 install.packages("devtools")
@@ -35,57 +42,100 @@ library(devtools)
 
 Next, install and load the Dynameta package by running the following code in the R console:
 ```
-devtools::install_github("gls21/Dynameta", build_vignettes = TRUE) # Currently won't work as need authentication token due to the repo being private
+devtools::install_github("gls21/Dynameta", build_vignettes = TRUE) 
 library(Dynameta)
 ```
 
-Access help documentation via:
+For access to help documentation, run:
 ```
 help(package = "Dynameta")
 ```
 
-Launch the Dynameta shiny app:
+Launch the Dynameta Shiny app:
 ```
 launch_Dynameta()
 ```
 
-View sample data included in the package
+View sample data included in the package. This contains data collected for a GLiTRS meta-analysis investigating the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) abundance.
 ```
+# View sample data
 sample_data()
+
+# View description of data set
+?Dynameta::sample_data
 ```
 
 <br> 
 
-Process for using the Dynameta app:
-* Once the app has opened in your browser, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse.
-* If you select 'Your own data', you will then be given the option to upload a file (.csv). ???Needs to contain certain columns???
-* The 'Introduction' tab provides a breakdown of the data, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from. 
-* To run meta-analytic models, go to the 'Run models' tab.
-* Based on your interests, filter the data by IUCN threat, location, taxonomic order, or biodiversity metric the data was collected with. Then click 'Run custom model'.
-* Dynameta will run a metafor meta-analytic model and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
-* You are able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
+<a name="using-the-dynameta-shiny-app"></a>
+## Using the Dynameta Shiny app
+
+### Introduction tab
+* Once the app has opened, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse. By default, Dynameta uses the sample data provided in the package. 
+* If you select 'Your own data', you will then be given the option to upload a .csv file. This needs to be of the same format as the sample data provided.
+* The 'Introduction' tab provides a breakdown of the data that you will analyse using Dynameta, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.
+
+<img src="inst/images/intro_tab.PNG" width="75%" height="75%">
+
+### Run models tab
+* To run meta-analytic models to investigate how different threats impact biodiversity, go to the 'Run models' tab.
+* The models are multilevel meta-analytic models, run using the [metafor](https://www.metafor-project.org/doku.php/metafor) package. The models account for the non-independence of the data by specifying paper and observation identification as nested random effects.
+* The effect size used to compare biodiversity is the log transformed Ratio Of Means (ROM) (also known as the log response ratio), which quantifies proportionate change between treatments.
+* Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric the data was collected with. 
+* Make your selections, then click 'Run custom model'.
+
+<img src="inst/images/run_models_tab_choose_filters.PNG" width="75%" height="75%">
+
+* Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
+* You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
+
+<img src="inst/images/run_models_tab_forest_plot.PNG" width="75%" height="75%">
+
+### References tab
 * View full paper details using the 'References' tab.
+
+<img src="inst/images/references_tab.PNG" width="75%" height="75%">
 
 <br>
 
 <a name="repo-structure"></a>
 ## Repo structure 
+
+* .github
+    * workflows
+        * R-CMD-check.yaml - configures an R CMD check workflow on GitHub Actions. A build check and a unit test (written using shinytest2) are run each time code is pushed to the repository.  
 * R
-    * launch_Dynameta.R - defines the function that can be used to launch the Dynameta app
-    * sample_data.R - describes the sample data included with the package that can be analysed using the Dynameta shiny app (needed to make the dataset help documentation)
+    * launch_Dynameta.R - defines the function that can be used to launch the Dynameta Shiny app.
+    * sample_data.R - describes the sample data included with the package that can be analysed using the Dynameta Shiny app (necessary to make the help documentation for the dataset).
 * data
-    * sample_data.rda - R data file containing the sample data 
+    * sample_data.rda - R data file containing the sample data.
 * inst
     * Dynameta_app
-        * server.R - defines how the Dynameta Shiny app works (back-end development)
-        * ui.R - defines the way the Dynameta Shiny app looks (front-end development)
+        * server.R - defines how the Dynameta Shiny app works (back-end development).
+        * ui.R - defines how the Dynameta Shiny app looks (front-end development).
+        * tests - directory where unit tests are stored.
+            * testthat 
+                * _snaps/shinytest2 - expected outputs from shinytest2.
+                    * shinytest2_test-001.json 
+                    * shinytest2_test-001_.png 
+                * setup-shinytest2.R
+                * test-shinytest2.R - re-runs the shinytest2 to check outputs match the expected outputs.
+            * testthat.R - part of standard setup for testthat.
+    * data_for_shinytest
+        * sample_data_for_shinytest.csv - sample data used by default by the Dynameta Shiny app.
     * images
-        * GLiTRS_logo.png
 * man
-    * launch_Dynameta.Rd - R documentation file for the launch_Dynameta() function
-    * sample_data.Rd - R documentation file for the sample data 
-* DESCRIPTION - overall metadata about the Dynameta package
-* NAMESPACE - specifies the functions in the Dynameta package that are exported to the user, and functions or packages that are imported by the Dynameta package
+    * launch_Dynameta.Rd - R documentation file for the launch_Dynameta() function.
+    * sample_data.Rd - R documentation file for the sample data. 
+* tests
+    * testthat/test-shinytest2_test.R - test driver script that runs the shinytest2 tests in the inst/Dynameta_app/tests directory. 
+    * testthat.R - part of standard setup for testthat.
+* vignettes
+    * Dynameta.Rmd - R markdown document for the Dynameta package and Shiny app vignette.
+* DESCRIPTION - overall metadata about the Dynameta package.
+* LICENSE - declare Dynameta package as licensed.
+* LICENSE.md - includes a copy of the full text of the license.
+* NAMESPACE - specifies the functions in the Dynameta package that are exported to the user, and functions or packages that are imported by the Dynameta package.
 
 <br>
 
