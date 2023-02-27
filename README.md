@@ -58,7 +58,7 @@ launch_Dynameta()
 View sample data included in the package. This contains data collected for a GLiTRS meta-analysis investigating the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) abundance.
 ```
 # View sample data
-sample_data()
+sample_data
 
 # View description of data set
 ?Dynameta::sample_data
@@ -121,7 +121,8 @@ sample_data()
                 * test-shinytest2.R - re-runs the shinytest2 to check outputs match the expected outputs.
             * testthat.R - part of standard setup for testthat.
     * data_for_shinytest
-        * sample_data_for_shinytest.csv - sample data used by default by the Dynameta Shiny app.
+        * sample_data_for_shinytest.csv - sample data in csv format.
+        * sample_data_rds - sample data (in rds format) used by default by the Dynameta Shiny app.
     * images
 * man
     * launch_Dynameta.Rd - R documentation file for the launch_Dynameta() function.

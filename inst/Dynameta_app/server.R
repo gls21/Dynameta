@@ -51,7 +51,12 @@ server <- function(input, output) {
     
     # When testing the package with shinytest, need to load the data in from the data_for_shinytest directory
     # or app can't find data like it does when user has installed the package 
-    sample_data <- read.csv("../data_for_shinytest/sample_data_for_shinytest.csv")
+    
+    # For csv version
+    #sample_data <- read.csv("../data_for_shinytest/sample_data_for_shinytest.csv")
+    
+    # Sample data in rds file
+    sample_data <- readRDS("../data_for_shinytest/sample_data_rds")
     
     # If user has selected to use their own data, and uploaded a dataset, the data is their uploaded data
     if (input$data_choice == "Your own data" && !is.null(input$upload_data_to_analyse)) {
@@ -366,7 +371,7 @@ server <- function(input, output) {
         #shinyjs::disable("download_custom_model_coeffs")
         
         # Then stop the process, and return this error message
-        base::stop(shiny::safeError("There is currently insufficient data for this model to run, please select an additional or alternative biodiversity metric category."))
+        base::stop(shiny::safeError(paste0("This model failed to run. This may be due to insufficient data for this model to run, but please see the R error message: ", e)))
       })
     
   })
