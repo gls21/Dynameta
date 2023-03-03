@@ -11,6 +11,7 @@ library(shiny) # Required to run any Shiny app
 library(shinyjs) # for enabling and disabling download button (enable disable show)
 library(shinyWidgets) # for including a 'select all' option for filters (pickerInput)
 library(tidyr) # for tidying messy data, part of tidyverse (drop_na)
+library(readr) # for reading in csv files uploaded to the app
 
 # ---------------------------------------------------------------------------------------------
 
@@ -69,15 +70,15 @@ server <- function(input, output) {
           
           # 2. Make sure file has certain columns - these are the columns in Daero's standardised data sheet
           # Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
-          shiny::need(base::all(colnames(sample_data) == colnames(read.csv(input$upload_data_to_analyse$datapath))), 
+          shiny::need(base::all(colnames(sample_data) == colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), 
                       paste("Data doesn't contain correct column(s).
                           \nMissing columns that must be present: ",
-                            paste(setdiff(colnames(sample_data), colnames(read.csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
+                            paste(setdiff(colnames(sample_data), colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
                             "\nExtra columns that need to be removed: ", 
-                            paste(setdiff(colnames(read.csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
+                            paste(setdiff(colnames(readr::read_csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
       )
       
-      data <- read.csv(input$upload_data_to_analyse$datapath)
+      data <- readr::read_csv(input$upload_data_to_analyse$datapath)
     
     # Else if no data uploaded, or user has selected the sample data, then the data is the sample data
     } else {
