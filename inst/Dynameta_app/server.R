@@ -62,20 +62,27 @@ server <- function(input, output) {
     # If user has selected to use their own data, and uploaded a dataset, the data is their uploaded data
     if (input$data_choice == "Your own data" && !is.null(input$upload_data_to_analyse)) {
       
+      # Get the file encoding - returns encodings 'guesses' and associated confidence values 
+      encoding_and_confidence <- readr::guess_encoding(input$upload_data_to_analyse$datapath)
+      
       # Checks on data 1 
       shiny::validate(
         
         # 1. Make sure file is a csv
         shiny::need(tools::file_ext(input$upload_data_to_analyse$name) == "csv", "File must be a .csv.") %then%
           
-          # 2. Make sure file has certain columns - these are the columns in Daero's standardised data sheet
-          # Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
-          shiny::need(base::all(colnames(sample_data) == colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), 
-                      paste("Data doesn't contain correct column(s).
-                          \nMissing columns that must be present: ",
-                            paste(setdiff(colnames(sample_data), colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
-                            "\nExtra columns that need to be removed: ", 
-                            paste(setdiff(colnames(readr::read_csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
+        # 2. Make sure file encoding is either UTF-8 or ASCII and it is at least 90% confident
+        shiny::need(encoding_and_confidence[1, 1] == "UTF-8" | encoding_and_confidence[1, 1] == "ASCII" & encoding_and_confidence[1, 2] >= 0.9, 
+                    paste0("The encoding of file you have uploaded (", encoding_and_confidence[1, 1], ") is not compatible with Dynameta. Ensure the file has UTF-8 or ASCII encoding.")) %then%
+          
+        # 3. Make sure file has certain columns - these are the columns in Daero's standardised data sheet
+        # Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
+        shiny::need(base::all(colnames(sample_data) == colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), 
+                    paste("Data doesn't contain correct column(s).
+                        \nMissing columns that must be present: ",
+                          paste(setdiff(colnames(sample_data), colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
+                          "\nExtra columns that need to be removed: ", 
+                          paste(setdiff(colnames(readr::read_csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
       )
       
       data <- readr::read_csv(input$upload_data_to_analyse$datapath)
