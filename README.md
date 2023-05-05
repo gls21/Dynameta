@@ -31,9 +31,15 @@ Dynameta was developed as part of the [GLiTRS](https://glitrs.ceh.ac.uk/) projec
 
 <br>
 
+If you encounter any issues or bugs while using Dynameta, please submit a new issue in the [issue tracker](https://github.com/gls21/Dynameta/issues) with a detailed description of the problem, including steps to reproduce it.
+
+<br>
+
 <a name="installing-and-using-the-dynameta-package"></a>
 ## Installing and using the Dynameta package 
 Installing the package requires devtools, which can be installed and loaded by running the following code in the R console:
+
+NOTE: If you have not installed devtools before you will need to restart your R session before installing to avoid problems. 
 ```
 install.packages("devtools")
 library(devtools)
@@ -151,3 +157,5 @@ sample_data
 <br>
 
 This project is licensed under the terms of the MIT license.
+
+

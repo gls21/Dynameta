@@ -21,6 +21,7 @@ Imports:
     dplyr,
     DT,
     leaflet,
+    mapview,
     metafor,
     readr,
     shiny,

@@ -1,4 +1,4 @@
-# Dynameta shiny app server script
+# Dynameta shiny app server script 
 
 # ---------------------------------------------------------------------------------------------
 
@@ -12,6 +12,7 @@ library(shinyjs) # for enabling and disabling download button (enable disable sh
 library(shinyWidgets) # for including a 'select all' option for filters (pickerInput)
 library(tidyr) # for tidying messy data, part of tidyverse (drop_na)
 library(readr) # for reading in csv files uploaded to the app
+library(mapview) # for downloading the leaflet map
 
 # ---------------------------------------------------------------------------------------------
 
@@ -38,11 +39,13 @@ server <- function(input, output) {
   # User choice of data to analyse
   shiny::observeEvent(input$data_choice, {
     
-    # If the user selects "Your own data", then 'show' the upload_data_to_analyse widget 
+    # If the user selects "Your own data", then 'show' the upload_data_to_analyse widget and info button  
     if (input$data_choice == "Your own data") {
       shinyjs::show("upload_data_to_analyse")
+      shinyjs::show("necessary_columns_info_btn")
     } else {
       shinyjs::hide("upload_data_to_analyse")
+      shinyjs::hide("necessary_columns_info_btn")
     }
     
   })
@@ -65,33 +68,78 @@ server <- function(input, output) {
       # Get the file encoding - returns encodings 'guesses' and associated confidence values 
       encoding_and_confidence <- readr::guess_encoding(input$upload_data_to_analyse$datapath)
       
+      # List the columns that must be included in the dataset
+      necessary_columns <- c("Paper_ID", "Observation_ID", "Author", "Year", "Title", "DOI", "URL", "Latitude", 
+                             "Longitude", "Country", "Order", "Biodiversity_metric", "IUCN_threat_category_1", 
+                             "Treatment", "Treatment_N", "Treatment_Mean", "Treatment_error", "Control_N", 
+                             "Control_Mean", "Control_error")
+      
       # Checks on data 1 
       shiny::validate(
         
         # 1. Make sure file is a csv
         shiny::need(tools::file_ext(input$upload_data_to_analyse$name) == "csv", "File must be a .csv.") %then%
           
-        # 2. Make sure file encoding is either UTF-8 or ASCII and it is at least 90% confident
-        shiny::need(encoding_and_confidence[1, 1] == "UTF-8" | encoding_and_confidence[1, 1] == "ASCII" & encoding_and_confidence[1, 2] >= 0.9, 
-                    paste0("The encoding of file you have uploaded (", encoding_and_confidence[1, 1], ") is not compatible with Dynameta. Ensure the file has UTF-8 or ASCII encoding.")) %then%
+          # 2. Make sure file encoding is either UTF-8 or ASCII and it is at least 90% confident
+          shiny::need(encoding_and_confidence[1, 1] == "UTF-8" | encoding_and_confidence[1, 1] == "ASCII" & encoding_and_confidence[1, 2] >= 0.9, 
+                      paste0("The encoding of file you have uploaded (", encoding_and_confidence[1, 1], ") is not compatible with Dynameta. Ensure the file has UTF-8 or ASCII encoding.")) %then%
           
-        # 3. Make sure file has certain columns - these are the columns in Daero's standardised data sheet
-        # Colnames have to be exactly the same - tell user which columns in their dataframe are missing, and which shouldn't be there
-        shiny::need(base::all(colnames(sample_data) == colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), 
-                    paste("Data doesn't contain correct column(s).
-                        \nMissing columns that must be present: ",
-                          paste(setdiff(colnames(sample_data), colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), collapse = ", "),
-                          "\nExtra columns that need to be removed: ", 
-                          paste(setdiff(colnames(readr::read_csv(input$upload_data_to_analyse$datapath)), colnames(sample_data)), collapse = ", ")))
+          # 3. Make sure file has certain columns - these are the columns in the sample data that are needed for Dynameta (other columns can vary)
+          # Tell user which columns in their dataframe are missing (if any)
+          shiny::need(base::all(necessary_columns %in% colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), 
+                      paste("Data doesn't contain correct column(s).
+                            \nMissing columns that must be present: ",
+                            paste(setdiff(necessary_columns, colnames(readr::read_csv(input$upload_data_to_analyse$datapath))), collapse = ", ")))
+        
+        
       )
       
       data <- readr::read_csv(input$upload_data_to_analyse$datapath)
-    
-    # Else if no data uploaded, or user has selected the sample data, then the data is the sample data
+      
+      # Else if no data uploaded, or user has selected the sample data, then the data is the sample data
     } else {
       data <- sample_data
     }
-
+    
+  })
+  
+  ### Clickable info button for details on what columns must be present in the dataframe 
+  shiny::observeEvent(input$necessary_columns_info_btn, {
+    
+    # necessary_columns <- c("Paper_ID", "Observation_ID", "Author", "Year", "Title", "DOI", "URL", "Latitude", 
+    #                        "Longitude", "Country", "Order", "Biodiversity_metric", "IUCN_threat_category_1", 
+    #                        "Treatment", "Treatment_N", "Treatment_Mean", "Treatment_error", "Control_N", 
+    #                        "Control_Mean", "Control_error", sep="<br>")
+    
+    
+    shiny::showModal(
+      shiny::modalDialog(
+        title = "Columns that must be included in your dataframe",
+        size = "l",
+        HTML("<b>Paper_ID</b> - The paper from which the comparison was drawn. (character)<br>
+            <b>Observation_ID</b> - The comparison of that row, which should be unique to each row. (character)<br>
+            <b>Author</b> - The full list of authors of the paper. (character)<br>
+            <b>Year</b> - The year of publication of the paper. (integer)<br>
+            <b>Title</b> - The paper title. (character)<br>
+            <b>DOI</b> - The DOI of the paper. (character)<br>
+            <b>URL</b> - The URL of the paper. (character)<br>
+            <b>Latitude</b> - The latitude coordinate of the observation in that row. (double)<br>
+            <b>Longitude</b> - The longitude coordinate of the observation in that row. (double)<br>
+            <b>Country</b> - The country in which the observation in that row is located. (character)<br>
+            <b>Order</b> - The taxonomic order of the biodiversity measured in that row, for both the treatment and control. (character)<br>
+            <b>Biodiversity_metric</b> - The metric of biodiversity measured. Biodiversity_metric should typically be one of “Abundance”, “Richness”, or “Biomass”. (character)<br>
+            <b>IUCN_threat_category_1</b> - Broadest level of IUCN threat. (character)<br>
+            <b>Treatment</b> - Name of the threat measured in that row (e.g. insecticide). (character)<br>
+            <b>Treatment_N</b> - The number of treatment sites from which the mean and error values were drawn. (integer)<br>
+            <b>Treatment_Mean</b> - The mean biodiversity value across all treatment sites for that comparison. (double)<br>
+            <b>Treatment_error</b> - The raw treatment error value reported by the authors for that observation. (double)<br>
+            <b>Control_N</b> - The number of control sites from which the mean and error values were drawn. (integer)<br>
+            <b>Control_Mean</b> - The mean biodiversity value across all control sites for that comparison. (double)<br>
+            <b>Control_error</b> - The raw control error value reported by the authors for that observation. (double)<br><br>
+            Your data can include columns for additional variables that you specified you would collect in your protocol. "),
+        easyClose = TRUE
+      )
+    )
   })
   
   # -------------------------------------------------------------------------------------
@@ -153,91 +201,107 @@ server <- function(input, output) {
   
   # ---------------------------------------------------------------------------------------------------------------
   
-  ### Table for details of specific threat chosen by user 
+  ### Text for data summary
   
-  # Make reactive options
-  output$reactive_threat <- shiny::renderUI({
-    shiny::selectInput(inputId = "threat",
-                       label = "Select threat to show more details for:",
-                       choices = c("", unique(data()$IUCN_threat_category_1)),
-                       selected = NULL)
+  # Add data summary text
+  output$data_summary_text <- renderText({
+    
+    # Calculate number of rows and columns
+    nrow <- nrow(data())
+    ncol <- ncol(data())
+    
+    # Calculate percentage of treatment means and control means that are close to 0 (below 0.5)
+    treatment_close_to_zero <- round((sum(data()$Treatment_Mean < 0.5)/nrow(data())) * 100, digits = 1)
+    control_close_to_zero <- round((sum(data()$Control_Mean < 0.5)/nrow(data())) * 100, digits = 1)
+    
+    # Get list of column names
+    colnames <- paste(colnames(data()), collapse = "<br>")
+    
+    paste0("<b>Summary of the data you will analyse using Dynameta.</b><br>", 
+           "Your data has ", nrow, " rows and ", ncol, " columns.<br><br>
+           It is worth noting that if your treatment and control mean values are close to zero, it can affect the accuracy of the variance estimation for a model (see ",
+           tags$a(href="https://esajournals.onlinelibrary.wiley.com/doi/10.1890/14-2402.1", "Lajeunesse, 2015"), " for more information). ",
+           treatment_close_to_zero, "% and ", control_close_to_zero, "% of your treatment and control means, respectively, are below 0.5. <br><br>",
+           "The column names that your data contains are as follows:<br>", colnames, sep="")
   })
-  
-  # Add table legend
-  output$table_legend_threat_details <- renderText({
-    paste0("<b>Table 2. </b>", "Details on the papers that studied ", input$threat, ". For full paper details, see the References tab.", sep="")
-  })
-  
-  # Add paper details table
-  output$threat_details_table <- renderTable({
-    
-    # Filter for selected threat
-    selected_threat <- data() %>%
-      dplyr::filter(IUCN_threat_category_1 %in% input$threat) # Shows warnings if you use == rather than %in%
-    
-    # Make empty dataframe
-    threat_details_table <- base::data.frame(Paper = character(), Number_of_data_points = numeric())
-    
-    # Fill in dataframe
-    for (i in unique(selected_threat$Paper_ID)) {
-      
-      # Filter for each paper
-      subset_threat_by_paper <- selected_threat %>%
-        dplyr::filter(Paper_ID == i)
-      
-      # Make new row to add to dataframe
-      new_row <- base::data.frame(
-        Paper = i,
-        Number_of_data_points = nrow(subset_threat_by_paper)
-      )
-      
-      # Add row to dataframe
-      threat_details_table <- rbind(threat_details_table, new_row)
-    }
-    
-    # Order 
-    threat_details_table <- threat_details_table %>%
-      dplyr::arrange(Paper)
-    
-    # remove _ from colnames
-    colnames(threat_details_table) <- c("Paper", "Number of data points")
-    
-    threat_details_table <- threat_details_table
-    
-  },
-  
-  striped = TRUE
-  
-  )
+
   
   # ---------------------------------------------------------------------------------------------------------------
   
   # Map of where data comes from
-  
-  output$map <- leaflet::renderLeaflet({
+  # Make reactive object:
+  leaflet_map <- reactive({
     
     # Filter the data to include data points which have long and lat available
     coord_data <- data() %>%
       tidyr::drop_na(Longitude, Latitude) %>%
       dplyr::filter(Longitude != "." & Latitude != ".")
     
+    # # Make leaflet map
+    # leaflet::leaflet(data = coord_data) %>%
+    #   leaflet::addTiles() %>% # default basemap
+    #   leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
+    #                             label = ~as.character(Observation_ID), labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
+    #                             clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
+    
     # Make leaflet map
-    leaflet::leaflet(data = coord_data) %>%
+    leaflet_map <- leaflet::leaflet(data = coord_data) %>%
       leaflet::addTiles() %>% # default basemap
       leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
-                                label = ~as.character(Observation_ID), labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
+                                label = ~as.character(Observation_ID), 
+                                labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
+                                #popup = '<a href=~URL>Link to paper</a>', # Trying to add clickable link to paper but not working
+                                popup = ~as.character(URL), # You can copy and paste the address with this one
                                 clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
     
   })
   
-  # Total number of data points
+  
+  output$map <- leaflet::renderLeaflet({
+    
+    req(leaflet_map())
+    
+    map <- leaflet_map()
+    
+  })
+  
+  # output$map <- leaflet::renderLeaflet({
+  #   
+  #   # Filter the data to include data points which have long and lat available
+  #   coord_data <- data() %>%
+  #     tidyr::drop_na(Longitude, Latitude) %>%
+  #     dplyr::filter(Longitude != "." & Latitude != ".")
+  #   
+  #   # # Make leaflet map
+  #   # leaflet::leaflet(data = coord_data) %>%
+  #   #   leaflet::addTiles() %>% # default basemap
+  #   #   leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
+  #   #                             label = ~as.character(Observation_ID), labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
+  #   #                             clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
+  #   
+  #   # Make leaflet map
+  #   leaflet::leaflet(data = coord_data) %>%
+  #     leaflet::addTiles() %>% # default basemap
+  #     leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
+  #                               label = ~as.character(Observation_ID), 
+  #                               labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
+  #                               #popup = '<a href=~URL>Link to paper</a>', # Trying to add clickable link to paper but not working
+  #                               popup = ~as.character(URL), # You can copy and paste the address with this one
+  #                               clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
+  #   
+  #   
+  #   
+  # })
+  
+  
+  # Calculate total number of data points
   total_data_points <- shiny::reactive({
     
     nrow(data())
     
   })
   
-  # Number of data points with co-ordinates available
+  # Calculate number of data points with co-ordinates available
   data_with_coords <- shiny::reactive({
     
     data_with_coords <- total_data_points() - (sum(is.na(data()$Longitude) | data()$Longitude == "."))
@@ -247,9 +311,25 @@ server <- function(input, output) {
   # Add map figure legend
   output$map_figure_legend <- shiny::renderText({
     base::paste("<b>Figure 1.</b>", "Map showing location of data points. Currently,", data_with_coords(), "out of", total_data_points(), 
-    "data points have latitude and longitude co-ordinates provided to enable them to be plotted.<br>
+                "data points have latitude and longitude co-ordinates provided to enable them to be plotted.<br>
     Often, clusters of data points have the same co-ordinates. You can zoom in on, and click on, data clusters to explore the map.")
   })
+  
+  # Download map button 
+  output$download_map <- downloadHandler(
+    
+    filename = function() {
+      paste0("map_from_Dynameta_", Sys.Date(), ".png", sep="")
+    },
+    
+    content = function(file) {
+      mapview::mapshot(x = leaflet_map(),
+                       file = file, 
+                       cliprect = "viewport", # the clipping rectangle matches the height & width from the viewing port
+                       selfcontained = FALSE) # when this was not specified, the function for produced a PDF of two pages: one of the leaflet map, the other a blank page.
+    }
+  ) 
+  
   
   # ---------------------------------------------------------------------------------------------------------------
   
@@ -323,7 +403,7 @@ server <- function(input, output) {
       dplyr::filter(Order %in% input$taxa_order) %>%
       dplyr::filter(Biodiversity_metric %in% input$biodiversity_metric_category)
     
-    # Try to run the model on the currently selected subset of data. If doesn't work, tell user to include more data.
+    # Try to run the model on the currently selected subset of data. If doesn't work, tell user to include more data or view error message.
     base::tryCatch(
       expr = {
         
@@ -352,7 +432,7 @@ server <- function(input, output) {
         # If model successfully runs, enable the download results buttons
         shinyjs::enable("download_custom_model_output")
         shinyjs::enable("download_custom_model_object")
-        #shinyjs::enable("download_custom_model_coeffs")
+        shinyjs::enable("download_forest_plot")
         
         ### Assign additional attributes to the model object (so if user downloads the rds model object,
         ### they would be able to see exactly what they did last time, and repeat it).
@@ -376,7 +456,7 @@ server <- function(input, output) {
         # If model does not successfully run, make sure download results buttons are disabled
         shinyjs::disable("download_custom_model_output")
         shinyjs::disable("download_custom_model_object")
-        #shinyjs::disable("download_custom_model_coeffs")
+        shinyjs::disable("download_forest_plot")
         
         # Then stop the process, and return this error message
         base::stop(shiny::safeError(paste0("This model failed to run. This may be due to insufficient data for this model to run, but please see the R error message: ", e)))
@@ -400,11 +480,12 @@ server <- function(input, output) {
   
   ### Plotting custom model graph
   
-  output$custom_model_figure <- shiny::renderPlot({
+  # Make plot a reactive object 
+  figure <- reactive({
     
     shiny::req(custom_model())
     
-    forest <- metafor::forest(custom_model(),
+    figure <- metafor::forest(custom_model(),
                               xlim = c(-12, 8), # horizontal limits of the plot region
                               ilab = base::cbind(Treatment), # add in info on treatment used
                               ilab.xpos = -8, # position treatment labels
@@ -416,55 +497,85 @@ server <- function(input, output) {
     
   })
   
+  # Render the plot in Dynameta
+  output$custom_model_figure <- shiny::renderPlot({
+    
+    shiny::req(figure())
+    
+    custom_model_figure <- figure()
+    
+  })
+  
   # Produce figure legend
   output$custom_model_figure_legend <- shiny::renderText({
     
     shiny::req(custom_model())
     
+    # Convert LRR overall effect size to percentage
     percentage_change <- round(100 * (exp(stats::coef(custom_model())) - 1), digits = 2)
+    
+    # Calculate confidence interval lower bound in percentage
+    ci_lb <- round(100 * (exp(custom_model()$ci.lb) - 1), digits = 2)
+    
+    # Calculate confidence interval upper bound in percentage
+    ci_ub <- round(100 * (exp(custom_model()$ci.ub) - 1), digits = 2)
+    
+    # Calculate I2 statistic. Code adapted from http://www.metafor-project.org/doku.php/tips:i2_multilevel_multivariate - Multilevel Models section
+    W <- diag(1/custom_model()$vi)
+    X <- metafor::model.matrix.rma(custom_model())
+    P <- W - W %*% X %*% solve(t(X) %*% W %*% X) %*% t(X) %*% W
+    i2 <- round(100 * sum(custom_model()$sigma2) / (sum(custom_model()$sigma2) + (custom_model()$k-custom_model()$p)/sum(diag(P))), digits = 2) 
+
+    # Add these stats to the paste() below.
     
     paste("<b>Figure 2. </b>", "Forest plot showing the effect sizes for each data point and the overall effect size of ",
           paste(shiny::isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity. The overall effect size is indicated by the diamond -
           the centre of the diamond on the x-axis represents the point estimate,
           with its width representing the 95% confidence interval. The specific ",
-          paste(shiny::isolate(input$iucn_threat_category)), " type is listed next to each data point. <br>",
+          paste(shiny::isolate(input$iucn_threat_category)), " type is listed next to each data point. <br><br>",
           "The overall effect size of ", paste(shiny::isolate(input$iucn_threat_category), collapse = ", "), " on biodiversity for ",
           paste(shiny::isolate(input$taxa_order), collapse = ", "), " in ", paste(shiny::isolate(input$location), collapse = ", "), " measured with ",
           paste(shiny::isolate(input$biodiversity_metric_category), collapse = ", "), " as the biodiversity metric is ", round(stats::coef(custom_model()), digits = 2),
-          ". This equates to a percentage change of ", percentage_change, "%.",
+          ". This equates to a percentage change of ", percentage_change, "%", " [", ci_lb, "%, ", ci_ub, "%]. <br><br>",
+          "The I² statistic for the meta-analysis is ", i2, "%. This describes the percentage of total variance that is due to heterogeneity (variability among studies), and not due to chance. <br><br>",
           sep = "")
   })
   
   # ----------------------------------------------------------------------------------------------------------------
   
-  ### Downloading the custom R model output and object 
+  ### Downloading the custom R model output, object, and forest plot 
   
   # Disable the download buttons on page load - so can't click it until a model has successfully run
   shinyjs::disable("download_custom_model_output")
   shinyjs::disable("download_custom_model_object")
+  shinyjs::disable("download_forest_plot")
   
   # Disable the download buttons if the iucn_threat_category choice changes
   observeEvent(input$iucn_threat_category, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
+    shinyjs::disable("download_forest_plot")
   })
   
   # Disable the download buttons if the location choice changes
   shiny::observeEvent(input$location, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
+    shinyjs::disable("download_forest_plot")
   })
   
   # Disable the download buttons if the taxa_order choice changes
   shiny::observeEvent(input$taxa_order, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
+    shinyjs::disable("download_forest_plot")
   })
   
   # Disable the download buttons if the biodiversity_metric_category choice changes
   shiny::observeEvent(input$biodiversity_metric_category, {
     shinyjs::disable("download_custom_model_output")
     shinyjs::disable("download_custom_model_object")
+    shinyjs::disable("download_forest_plot")
   })
   
   # Download custom model output (txt file) button
@@ -487,6 +598,29 @@ server <- function(input, output) {
     }
   )
   
+  # Download forest plot button
+  output$download_forest_plot <- shiny::downloadHandler(
+    
+    filename = function() {
+      paste0("forest_plot", base::Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      grDevices::png(file, width = 1500, height = 1000)
+      metafor::forest(custom_model(),
+                      xlim = c(-12, 8), # horizontal limits of the plot region
+                      ilab = base::cbind(Treatment), # add in info on treatment used
+                      ilab.xpos = -8, # position treatment labels
+                      order = Treatment, # Order results by treatment
+                      cex = 1.5,
+                      col = "#0483A4", # change colour of overall effect size diamond using CEH hero colour
+                      mlab = "RE Model for All Studies",
+                      header = "Author(s) and Year")
+      grDevices::dev.off()
+    }
+
+  )
+  
+  
   # ----------------------------------------------------------------------------------------------------------------
   
   # =================================================================================================================
@@ -503,17 +637,53 @@ server <- function(input, output) {
   output$references_table_legend <- shiny::renderText({
     paste("<b>Table 3.</b>", "References for all papers that contribute data to the analysis.")
   })
-  
-  # Add references table
-  output$references_table <- DT::renderDT({
+
+  # Make reactive references table
+  references_table_object <- shiny::reactive({
     
-    # Keep all columns - not just the Paper_ID
-    references_table <- data() %>%
+    # Initialise empty data frame to count data points per Paper_ID and which threat(s) the paper investigated
+    all_details <- base::data.frame(Paper_ID = character(), Total_data_points = numeric(), Threat = character())
+    
+    # Fill in dateframe
+    for (i in unique(data()$Paper_ID)) {
+      
+      # Filter for each paper
+      paper_subset <- data() %>%
+        dplyr::filter(Paper_ID == i)
+      
+      # Count number of rows for each paper
+      paper_details = base::data.frame(
+        Paper_ID = i,
+        Total_data_points = nrow(paper_subset),
+        Threat = unique(paper_subset$IUCN_threat_category_1)
+      )
+      
+      # Add row to dataframe
+      all_details <- rbind(all_details, paper_details)
+    }
+    
+    
+    # Make reference table including unique Paper_IDs (keeping all columns)
+    references_table_object <- data() %>%
       dplyr::distinct(Paper_ID, .keep_all = TRUE)
     
+    # Add data points and threats columns
+    references_table_object <- base::merge(references_table_object, all_details, by = "Paper_ID")
+    
     # Now just include the columns we want, and arrange in alphabetical order
-    references_table <- references_table[, c("Author", "Year", "Title", "DOI")] %>%
+    references_table_object <- references_table_object[, c("Author", "Year", "Title", "DOI", "Threat", "Total_data_points")] %>%
+      dplyr::rename("Data points" = "Total_data_points") %>%
+      dplyr::rename("Threat investigated" = "Threat") %>%
       dplyr::arrange(Author)
+    
+  })
+    
+  # Render the references table in the shiny app  
+  output$references_table <- DT::renderDT({
+    
+    shiny::req(references_table_object())
+    
+    references_table <- references_table_object()
     
   },
   
@@ -531,9 +701,31 @@ server <- function(input, output) {
   
   )
   
+  # Download reference table (.csv) button
+  output$download_references_table <- shiny::downloadHandler(
+    filename = function() {
+      paste0("references_table_", base::Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      utils::write.csv(references_table_object(), file, row.names = FALSE)
+    }
+  )
+  
   # =================================================================================================================
   # =================================================================================================================
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
