@@ -965,21 +965,11 @@ server <- function(input, output) {
       tidyr::drop_na(Longitude, Latitude) %>%
       dplyr::filter(Longitude != "." & Latitude != ".")
     
-    # # Make leaflet map
-    # leaflet::leaflet(data = coord_data) %>%
-    #   leaflet::addTiles() %>% # default basemap
-    #   leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
-    #                             label = ~as.character(Observation_ID), labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
-    #                             clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
-    
     # Make leaflet map
     leaflet_map <- leaflet::leaflet(data = coord_data) %>%
       leaflet::addTiles() %>% # default basemap
       leaflet::addCircleMarkers(lng = ~Longitude, lat = ~Latitude, # identify columns in dataframe containing coords
-                                label = ~as.character(Observation_ID), 
-                                labelOptions = labelOptions(textsize = "15px"), # add labels to points and make text bigger
-                                #popup = '<a href=~URL>Link to paper</a>', # Trying to add clickable link to paper but not working
-                                popup = ~as.character(URL), # You can copy and paste the address with this one
+                                popup = ~base::paste('<a href="', URL, '">Link to paper</a>', sep = ''), # Click on point to get clickable link to paper if available
                                 clusterOptions = markerClusterOptions(spiderfyDistanceMultiplier=1.5)) # cluster large numbers of markers
     
   })
