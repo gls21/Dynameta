@@ -77,7 +77,7 @@ Dynameta::launch_Dynameta() # The function takes no arguments
 * If you select 'Your own data', you will then be given the option to upload a .csv file. This needs to be of the same format as the sample data provided.
 * The 'Introduction' tab provides a breakdown of the data that you will analyse using Dynameta, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.
 
-![](../inst/images/intro_tab.PNG){width=150% height=150%}
+![](../man/figures/intro_tab.PNG){width=150% height=150%}
 
 ### 2. Run models tab
 * To run meta-analytic models to investigate how different threats impact biodiversity, go to the 'Run models' tab.
@@ -86,16 +86,16 @@ Dynameta::launch_Dynameta() # The function takes no arguments
 * Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric the data was collected with. 
 * Make your selections, then click 'Run custom model'.
 
-![](../inst/images/run_models_tab_choose_filters.PNG){width=150% height=150%}
+![](../man/figures/run_models_tab_choose_filters.PNG){width=150% height=150%}
 
 * Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
 * You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
 
-![](../inst/images/run_models_tab_forest_plot.PNG){width=150% height=150%}
+![](../man/figures/run_models_tab_forest_plot.PNG){width=150% height=150%}
 
 ### 3. References tab 
 View full paper details using the 'References' tab.
 
-![](../inst/images/references_tab.PNG){width=150% height=150%}
+![](../man/figures/references_tab.PNG){width=150% height=150%}
 
 

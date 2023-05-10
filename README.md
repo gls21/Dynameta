@@ -1,4 +1,4 @@
-# Dynameta: A dynamic platform for ecological meta-analyses in R Shiny <img src="inst/images/Dynameta_hex_sticker.png" width="15%" height="15%" align="right">
+# Dynameta: A dynamic platform for ecological meta-analyses in R Shiny <img src="man/figures/Dynameta_hex_sticker.PNG" width="15%" height="15%" align="right">
 
 <!-- badges: start -->
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/gls21/Dynameta/blob/main/LICENSE.md) [![R-CMD-check](https://github.com/gls21/Dynameta/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gls21/Dynameta/actions/workflows/R-CMD-check.yaml) [![DOI](https://zenodo.org/badge/577348153.svg)](https://zenodo.org/badge/latestdoi/577348153)
@@ -41,6 +41,7 @@ If you encounter any issues or bugs while installing or using Dynameta, please s
 
 ### Installing in RStudio using devtools
 Installing the package requires devtools, which can be installed and loaded by running the following code in the R console:
+
 NOTE: If you have not installed devtools before you will need to restart your R session before installing to avoid problems. 
 ```
 install.packages("devtools")
@@ -117,7 +118,7 @@ sample_data
 * If you select 'Your own data', you will then be given the option to upload a .csv file. This needs to be of the same format as the sample data provided.
 * The 'Introduction' tab provides a breakdown of the data that you will analyse using Dynameta, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.
 
-<img src="inst/images/intro_tab.PNG" width="100%" height="100%">
+<img src="man/figures/intro_tab.PNG" width="100%" height="100%">
 
 ### Run models tab
 * To run meta-analytic models to investigate how different threats impact biodiversity, go to the 'Run models' tab.
@@ -126,17 +127,17 @@ sample_data
 * Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric the data was collected with. 
 * Make your selections, then click 'Run custom model'.
 
-<img src="inst/images/run_models_tab_choose_filters.PNG" width="100%" height="100%">
+<img src="man/figures/run_models_tab_choose_filters.PNG" width="100%" height="100%">
 
 * Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
 * You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
 
-<img src="inst/images/run_models_tab_forest_plot.PNG" width="100%" height="100%">
+<img src="man/figures/run_models_tab_forest_plot.PNG" width="100%" height="100%">
 
 ### References tab
 * View full paper details using the 'References' tab.
 
-<img src="inst/images/references_tab.PNG" width="100%" height="100%">
+<img src="man/figures/references_tab.PNG" width="100%" height="100%">
 
 <br>
 
@@ -189,7 +190,7 @@ sample_data
 
 <br>
 
-<img src="https://www.ceh.ac.uk/sites/default/files/images/theme/ukceh_logo_long_720x170_rgb.png" width="25%" height="25%"> <img src="inst/images/GLiTRS_logo.png" width="10%" height="10%">
+<img src="https://www.ceh.ac.uk/sites/default/files/images/theme/ukceh_logo_long_720x170_rgb.png" width="25%" height="25%"> <img src="man/figures/GLiTRS_logo.PNG" width="10%" height="10%">
 
 <br>
 
