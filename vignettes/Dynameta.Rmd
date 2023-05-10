@@ -517,7 +517,7 @@ Adding these chunks of code results in an additional tab for sub-group analysis 
 
 <br>
 
-Users can build on the example here around sub-group analysis, add additional features, or alter other parts of the app as desired. 
+Users can build on the example here around sub-group analysis, add additional features, or alter other parts of the app as desired to suit their needs. 
 
 <br>
 
