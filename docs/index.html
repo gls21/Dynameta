@@ -77,9 +77,16 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="dynameta-a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny-">Dynameta: A dynamic platform for ecological meta-analyses in R Shiny <img src="reference/figures/Dynameta_hex_sticker.PNG" width="15%" height="15%" align="right"><a class="anchor" aria-label="anchor" href="#dynameta-a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny-"></a>
 </h1></div>
+<p><br></p>
+<div class="section level3">
+<h3 id="view-the-dynameta-pkgdown-website-here">View the Dynameta pkgdown website <a href="https://gls21.github.io/Dynameta/index.html" class="external-link">here</a>
+<a class="anchor" aria-label="anchor" href="#view-the-dynameta-pkgdown-website-here"></a>
+</h3>
+<p><br></p>
 <!-- badges: start -->
 
 <hr>
+</div>
 <div class="section level2">
 <h2 id="table-of-contents">Table of contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
 </h2>
@@ -95,6 +102,8 @@
 <p>Meta-analyses are used to quantitatively summarise evidence across studies in a systematic process. Their larger sample size (and hence power) compared to individual research studies increases the chance of detecting significant effects.</p>
 <p>Despite representing a significant improvement upon individual studies, meta-analyses have a number of limitations which Dynameta was developed to overcome: 1. Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available. 2. Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.</p>
 <p>Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the <a href="https://www.iucnredlist.org/resources/threat-classification-scheme" class="external-link">IUCN threats classification scheme</a>) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. Here on github, Dynameta_app/ can be found in the <a href="https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app" class="external-link">inst/ directory</a>. If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files.</p>
+<p>For an example of how the codebase can be edited to suit a specific user’s needs, please see the last section of the <a href="https://gls21.github.io/Dynameta/articles/Dynameta.html" class="external-link">Dynameta vignette (Get started).</a></p>
+<p><br></p>
 <p>Dynameta was developed as part of the <a href="https://glitrs.ceh.ac.uk/" class="external-link">GLiTRS</a> project, a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change.</p>
 <p><br></p>
 <p>If you encounter any issues or bugs while installing or using Dynameta, please submit a new issue in the <a href="https://github.com/gls21/Dynameta/issues" class="external-link">issue tracker</a> with a detailed description of the problem, including steps to reproduce it.</p>
@@ -140,7 +149,7 @@
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="using-dynameta">Using Dynameta<a class="anchor" aria-label="anchor" href="#using-dynameta"></a>
+<h3 id="using-the-dynameta-package">Using the Dynameta package<a class="anchor" aria-label="anchor" href="#using-the-dynameta-package"></a>
 </h3>
 <p>Once you have successfully installed Dynameta, to access help documentation, run:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"Dynameta"</span><span class="op">)</span></span></code></pre>
@@ -160,7 +169,7 @@
 </h3>
 <ul>
 <li>Once the app has opened, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse. By default, Dynameta uses the sample data provided in the package.</li>
-<li>If you select ‘Your own data’, you will then be given the option to upload a .csv file. This needs to be of the same format as the sample data provided.</li>
+<li>If you select ‘Your own data’, you will then be given the option to upload a .csv file. This needs to meet some criteria for Dynameta to be able to analyse it - there is a button to click to see which columns need to be included.</li>
 <li>The ‘Introduction’ tab provides a breakdown of the data that you will analyse using Dynameta, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.</li>
 </ul>
 <p><img src="reference/figures/intro_tab.PNG" width="100%" height="100%"></p>
@@ -178,7 +187,6 @@
 <p><img src="reference/figures/run_models_tab_choose_filters.PNG" width="100%" height="100%"></p>
 <ul>
 <li>Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.</li>
-<li>You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).</li>
 </ul>
 <p><img src="reference/figures/run_models_tab_forest_plot.PNG" width="100%" height="100%"></p>
 </div>
@@ -189,6 +197,34 @@
 <li>View full paper details using the ‘References’ tab.</li>
 </ul>
 <p><img src="reference/figures/references_tab.PNG" width="100%" height="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="resources-tab">Resources tab<a class="anchor" aria-label="anchor" href="#resources-tab"></a>
+</h3>
+<ul>
+<li>Contains useful links to guidance developed by communities of practice when conducting evidence syntheses. These include:
+<ul>
+<li>
+<a href="http://www.prisma-statement.org/" class="external-link">PRISMA</a> - For reporting systematic reviews and meta-analysis (developed for medical field but see ecology specific version below).</li>
+<li>
+<a href="http://www.prisma-statement.org/Extensions/EcoEvo" class="external-link">PRISMA Extension for Ecology and Evolution</a> - For conducting environmental evidence syntheses.</li>
+<li>
+<a href="https://www.roses-reporting.com/" class="external-link">ROSES</a> - For reporting systematic reviews and meta-analysis (developed for environmental research).</li>
+<li>
+<a href="https://environmentalevidence.org/" class="external-link">Collaboration for Environmental Evidence (CEE)</a>. See <a href="https://environmentalevidence.org/information-for-authors" class="external-link">here</a> for full guidance document.</li>
+<li>
+<a href="https://training.cochrane.org/handbook/current" class="external-link">Cochrane Handbook for Systematic Reviews of Interventions</a> - For conducting systematic reviews (developed for medical field).</li>
+<li>
+<a href="https://www.campbellcollaboration.org/research-resources/training-courses.html" class="external-link">Campbell Collaboration</a> - For conducting evidence syntheses (developed for social sciences field).</li>
+</ul>
+</li>
+<li>The following are useful guides for conducting meta-analyses:
+<ul>
+<li><a href="https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/" class="external-link">Doing Meta-Analysis with R: A Hands-On Guide</a></li>
+<li><a href="http://www.metafor-project.org/doku.php/tips" class="external-link">The metafor package tips and notes</a></li>
+</ul>
+</li>
+</ul>
 <p><br></p>
 <p><a name="repo-structure"></a> ## Repo structure</p>
 <ul>

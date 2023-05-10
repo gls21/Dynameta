@@ -74,8 +74,10 @@
 
     
     
+<p><br></p>
 <div class="section level2">
-<h2 id="a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny">A dynamic platform for ecological meta-analyses in R Shiny<a class="anchor" aria-label="anchor" href="#a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny"></a>
+<h2 id="introduction-to-dynameta-a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny">Introduction to Dynameta: A dynamic platform for ecological
+meta-analyses in R Shiny<a class="anchor" aria-label="anchor" href="#introduction-to-dynameta-a-dynamic-platform-for-ecological-meta-analyses-in-r-shiny"></a>
 </h2>
 <p>Dynameta is an <a href="https://shiny.rstudio.com/" class="external-link">R Shiny</a>
 platform written as an R package. This means the app can be launched by
@@ -117,33 +119,63 @@ the DESCRIPTION, NAMESPACE, etc. files.</p>
 cross-institutional consortium aiming to build global threat-response
 models to better understand and predict insect biodiversity change.</p>
 <p><br></p>
+</div>
+<div class="section level2">
+<h2 id="installing-and-using-the-dynameta-package">Installing and using the Dynameta package<a class="anchor" aria-label="anchor" href="#installing-and-using-the-dynameta-package"></a>
+</h2>
+<p><br></p>
+<div class="section level3">
+<h3 id="installing-in-rstudio-using-devtools">Installing in RStudio using devtools<a class="anchor" aria-label="anchor" href="#installing-in-rstudio-using-devtools"></a>
+</h3>
 <p>Installing the package requires devtools, which can be installed and
-loaded by running:</p>
+loaded by running the following code in the R console: <br> NOTE: If you
+have not installed devtools before you will need to restart your R
+session before installing to avoid problems.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span></code></pre></div>
-<p>Next, install the Dynameta package by running:</p>
+<p>If you have issues installing devtools, you could try the remotes
+package as an alternative. This is a lightweight replacement of the
+install_* functions in devtools. Install by running:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"gls21/Dynameta"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Then load the package by running:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span></code></pre></div>
+<p>Next, install the Dynameta package by running the following code in
+the R console:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"gls21/Dynameta"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Then load it:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gls21/Dynameta" class="external-link">Dynameta</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span> <span class="co"># for previewing sample dataset </span></span>
 <span><span class="co">#&gt; Warning: package 'tibble' was built under R version 4.2.3</span></span></code></pre></div>
-<p>For access to help documentation, run:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"Dynameta"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="data-sample_data">Data: sample_data<a class="anchor" aria-label="anchor" href="#data-sample_data"></a>
-</h2>
-<p>The Dynameta package comes with <code>sample_data</code>, which is
-used by default by the Dynameta Shiny app. This is an example dataset
-containing data collected for a GLiTRS meta-analysis investigating the
-effect of pollution (specifically pesticide application) on dragonfly
-and damselfly (Odonata) abundance. The dataset is described in full in
-<code><a href="../reference/sample_data.html">?Dynameta::sample_data</a></code>.</p>
+<p>Or if using remotes, run:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"gls21/Dynameta"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gls21/Dynameta" class="external-link">Dynameta</a></span><span class="op">)</span></span></code></pre></div>
+<p>A potential reason for unsuccessful installation is the vignette not
+building correctly. If this is the case, remove the ‘build_vignettes =
+TRUE’ argument from the installation command.</p>
+<p><br></p>
+<p>Please see the <a href="https://github.com/gls21/Dynameta/tree/main#readme" class="external-link">README</a> for
+alternative installation options.</p>
+<p><br></p>
+</div>
+<div class="section level3">
+<h3 id="using-the-dynameta-package">Using the Dynameta package<a class="anchor" aria-label="anchor" href="#using-the-dynameta-package"></a>
+</h3>
+<p>Once you have successfully installed Dynameta, to access help
+documentation, run:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"Dynameta"</span><span class="op">)</span></span></code></pre></div>
+<p>View sample data: The Dynameta package comes with
+<code>sample_data</code>, which is used by default by the Dynameta Shiny
+app. This is an example dataset containing data collected for a GLiTRS
+meta-analysis investigating the effect of pollution (specifically
+pesticide application) on dragonfly and damselfly (Odonata) abundance.
+The dataset is described in full in
+<code><a href="../reference/sample_data.html">?Dynameta::sample_data</a></code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="fu">Dynameta</span><span class="fu">::</span><span class="va"><a href="../reference/sample_data.html">sample_data</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 47 46</span></span>
 <span></span>
@@ -169,19 +201,18 @@ and damselfly (Odonata) abundance. The dataset is described in full in
 <span><span class="co">#&gt; <span style="color: #949494;">#   Life_history_stage &lt;chr&gt;, Experimental_year_start &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   Experimental_year_end &lt;int&gt;, Sampling_method &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   Biodiversity_metric &lt;chr&gt;, Unit &lt;chr&gt;, IUCN_threat_category_1 &lt;chr&gt;, …</span></span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="launch-the-dynameta-shiny-app">Launch the Dynameta Shiny app<a class="anchor" aria-label="anchor" href="#launch-the-dynameta-shiny-app"></a>
-</h2>
-<p>To launch a local instance of the Dynameta Shiny app, run the
-following code: <br> The following code is not executed here as it
-prevents the document from knitting.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>Launch the Dynameta Shiny app: To launch a local instance of the
+Dynameta Shiny app, run the following code: <br> The following code is
+not executed here as it prevents the document from knitting.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Dynameta</span><span class="fu">::</span><span class="fu"><a href="../reference/launch_Dynameta.html">launch_Dynameta</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># The function takes no arguments</span></span></code></pre></div>
+<p><br></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="process-for-using-the-dynameta-shiny-app">Process for using the Dynameta Shiny app<a class="anchor" aria-label="anchor" href="#process-for-using-the-dynameta-shiny-app"></a>
 </h2>
+<p><br></p>
 <div class="section level3">
 <h3 id="introduction-tab">1. Introduction tab<a class="anchor" aria-label="anchor" href="#introduction-tab"></a>
 </h3>
@@ -198,6 +229,7 @@ IUCN threat(s) they investigated, and a map indicating where each data
 point originated from.</li>
 </ul>
 <p><img src="../reference/figures/intro_tab.PNG" style="width:150.0%;height:150.0%"></p>
+<p><br></p>
 </div>
 <div class="section level3">
 <h3 id="run-models-tab">2. Run models tab<a class="anchor" aria-label="anchor" href="#run-models-tab"></a>
@@ -226,12 +258,359 @@ your chosen IUCN threat on biodiversity.</li>
 containing the results summary of the model fitting (.txt).</li>
 </ul>
 <p><img src="../reference/figures/run_models_tab_forest_plot.PNG" style="width:150.0%;height:150.0%"></p>
+<p><br></p>
 </div>
 <div class="section level3">
 <h3 id="references-tab">3. References tab<a class="anchor" aria-label="anchor" href="#references-tab"></a>
 </h3>
 <p>View full paper details using the ‘References’ tab.</p>
 <p><img src="../reference/figures/references_tab.PNG" style="width:150.0%;height:150.0%"></p>
+<p><br></p>
+</div>
+<div class="section level3">
+<h3 id="resources-tab">4. Resources tab<a class="anchor" aria-label="anchor" href="#resources-tab"></a>
+</h3>
+<p>Access links to guidance developed by communities of practice when
+conducting evidence syntheses, and other meta-analysis resources.</p>
+<p><br></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="editing-the-codebase">Editing the codebase<a class="anchor" aria-label="anchor" href="#editing-the-codebase"></a>
+</h2>
+<p>A user may wish to edit the codebase to better suit their needs. Here
+we document an example of how to add the option to perform full
+sub-group analysis on the data (in addition to the current approach
+taken by Dynameta, which is to complete a meta-analysis on a subset of
+the data). For full sub-group analysis, several separate random-effects
+meta-analyses are conducted (one for each subgroup) and the effects of
+the subgroups are compared using a statistical test. To run a
+meta-analytic model with sub-group analysis using metafor, you can add a
+categorical variable as a moderator.</p>
+<p><br></p>
+<p>To achieve this, you need access to the scripts that need to be
+edited. Possible options are to fork the <a href="https://github.com/gls21/Dynameta" class="external-link">Dynameta GitHub repo</a>, or
+download the repo as a zipped file.</p>
+<p>Next you will need to open the ui.R and server.R files that make up
+the Dynameta shiny app. These are in the <a href="https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app" class="external-link">/inst/Dynameta_app/</a>
+directory.</p>
+<p>The following chunks of code need to be added to the ui.R and
+server.R files at the line numbers specified. NOTE: The line numbers
+correspond to the line numbers in the Vxxx release of Dynameta code.</p>
+<p><br></p>
+<div class="section level3">
+<h3 id="ui-r-script">ui.R script<a class="anchor" aria-label="anchor" href="#ui-r-script"></a>
+</h3>
+<div class="section level4">
+<h4 id="section">1<a class="anchor" aria-label="anchor" href="#section"></a>
+</h4>
+<p>Section: Modelling tab</p>
+<p>Line 239</p>
+<p><br></p>
+<p>Insert the code beneath this line of code:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">tabPanel</span>(<span class="st">"Run models"</span>,</span></code></pre></div>
+<p>And above these lines of code:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ----------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Title to show at top of tab</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">p</span>(<span class="fu">h2</span>(tags<span class="sc">$</span><span class="fu">b</span>(<span class="st">"Run models"</span>))),</span></code></pre></div>
+<p><br></p>
+<p>Code to add:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make tab buttons within this tab bigger</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">style</span>(<span class="fu">HTML</span>(<span class="st">"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">                    .tabbable &gt; .nav &gt; li &gt; a {</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">                    width: 400PX; font-size: 30px</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">                    }</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">                  "</span>)),</span></code></pre></div>
+<p><br></p>
+</div>
+<div class="section level4">
+<h4 id="section-1">2<a class="anchor" aria-label="anchor" href="#section-1"></a>
+</h4>
+<p>Section: Modelling tab</p>
+<p>Line 256</p>
+<p><br></p>
+<p>Insert the code beneath these lines of code:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p</span>(<span class="fu">h5</span>(<span class="st">"The effect size used to compare biodiversity is the log transformed Ratio Of Means (ROM) (also known as the log response ratio),</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">which quantifies proportionate change between treatments."</span>)),</span></code></pre></div>
+<p>And above these lines of code:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">hr</span>(),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ===========================================================================================================</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">### Running custom models</span></span></code></pre></div>
+<p><br></p>
+<p>Code/text to alter/add:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alter this text to describe difference between subset analysis and subgroup analysis </span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Comment out this original text ##</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p(h5("Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric.")),</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Add this text </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">p</span>(<span class="fu">h5</span>(<span class="st">"There are two options available for analysis:"</span>)),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">h5</span>(tags<span class="sc">$</span><span class="fu">ol</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">"Filter the data by threat, location, taxonomic order, and biodiversity metric</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">                            and run a meta-analytic model on this subset of data."</span>),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">"Choose a moderator variable and carry out a full sub-group analysis </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">                            (meta-regression with a categorical predictor) to see if the pooled effect sizes</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">                            found in these subgroups differ from each other."</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>)),</span></code></pre></div>
+<p><br></p>
+</div>
+<div class="section level4">
+<h4 id="section-2">3<a class="anchor" aria-label="anchor" href="#section-2"></a>
+</h4>
+<p>Section: Modelling tab</p>
+<p>Line 269</p>
+<p><br></p>
+<p>Insert the code beneath these lines of code:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ===========================================================================================================</span></span>
+<span></span>
+<span><span class="co">### Running custom models</span></span>
+<span></span>
+<span><span class="co"># ===========================================================================================================</span></span></code></pre></div>
+<p>And above these lines of code:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">h5</span>(<span class="st">"Use this section to filter the data. Once you have made your selections, click 'Run custom model'. </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">    The model runs in real-time and the results are presented as a forest plot."</span>),</span></code></pre></div>
+<p><br></p>
+<p>Code to add:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Include 2 tabs within the 'Run models' tab</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># One for analysing subset of data (as Dynameta did originally)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># One for full sub-group analysis </span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">tabsetPanel</span>(<span class="at">type =</span> <span class="st">"tabs"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                   </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># ------------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                   </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                   <span class="do">### Analyse subset of data tab </span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                   </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># ------------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>                   </span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                   shiny<span class="sc">::</span><span class="fu">tabPanel</span>(<span class="st">"Analyse subset of data"</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>                                   </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                                   tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>     </span></code></pre></div>
+<p><br></p>
+</div>
+<div class="section level4">
+<h4 id="section-3">4<a class="anchor" aria-label="anchor" href="#section-3"></a>
+</h4>
+<p>Section: Modelling tab</p>
+<p>Line 421</p>
+<p><br></p>
+<p>Insert the code beneath these lines of code:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download button for downloading forest plot</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">downloadButton</span>(<span class="at">outputId =</span> <span class="st">"download_forest_plot"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">label =</span> <span class="st">"Download forest plot"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">style=</span><span class="st">'font-size:125%'</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                   <span class="er">)</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="er">)</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>tags<span class="sc">$</span><span class="fu">br</span>()</span></code></pre></div>
+<p>And above these lines of code:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="er">)</span>, <span class="co"># close modelling tab</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ===============================================================================================================================</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ===============================================================================================================================</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># References tab</span></span></code></pre></div>
+<p><br></p>
+<p>Code to add:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                   <span class="er">)</span>, <span class="co"># Close 'Analyse subset of data' tab</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Sub-group analysis tab </span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">tabPanel</span>(<span class="st">"Sub-group analysis"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>                <span class="fu">h5</span>(<span class="st">"Use this section to carry out a full sub-group analysis. </span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="st">                    Choose a 'moderator' variable from the drop-down list.</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="st">                    Once you have made your selection, click 'Run sub-group analysis'. </span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="st">                    The model runs in real-time and the R model summary is displayed."</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                <span class="fu">h5</span>(<span class="st">"Note: The variable you choose as a moderator needs to have at least two levels.</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="st">                    If the model fails to run, this is a likely reason."</span>),</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>                tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Add parts for sub-group analysis</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                shiny<span class="sc">::</span><span class="fu">fluidRow</span>(</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>                  shiny<span class="sc">::</span><span class="fu">column</span>(</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">12</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># Select input for choice of moderator</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">h4</span>(shiny<span class="sc">::</span><span class="fu">uiOutput</span>(<span class="st">"reactive_moderator_choice"</span>)),</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># include action button to run model once inputs have been selected</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>                    shiny<span class="sc">::</span><span class="fu">actionButton</span>(<span class="st">"run_sub_group_analysis"</span>, <span class="st">"Run sub-group analysis"</span>, <span class="at">style=</span><span class="st">'font-size:125%'</span>),</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># Render output of model </span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>                    shinycssloaders<span class="sc">::</span><span class="fu">withSpinner</span>(shiny<span class="sc">::</span><span class="fu">verbatimTextOutput</span>(<span class="at">outputId =</span> <span class="st">"subgroup_model_output"</span>)),</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>(),</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>                    tags<span class="sc">$</span><span class="fu">br</span>()</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>                  ),</span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>                  </span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>), <span class="co"># Close 'Sub-group analysis' tab</span></span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------------------------------------------------------------------</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="er">)</span>, <span class="co"># close tabs within 'Run models' tab       </span></span></code></pre></div>
+<p><br></p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="server-r-script">server.R script<a class="anchor" aria-label="anchor" href="#server-r-script"></a>
+</h3>
+<div class="section level4">
+<h4 id="section-4">1<a class="anchor" aria-label="anchor" href="#section-4"></a>
+</h4>
+<p>Section: Run models tab</p>
+<p>Line 579</p>
+<p><br></p>
+<p>Insert the code beneath these lines of code:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Download forest plot button</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">download_forest_plot</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/downloadHandler.html" class="external-link">downloadHandler</a></span><span class="op">(</span></span>
+<span>  </span>
+<span>  filename <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"forest_plot"</span>, <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".png"</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>,</span>
+<span>  content <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">1500</span>, height <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span>    <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/forest.html" class="external-link">forest</a></span><span class="op">(</span><span class="fu">custom_model</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                    xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">12</span>, <span class="fl">8</span><span class="op">)</span>, <span class="co"># horizontal limits of the plot region</span></span>
+<span>                    ilab <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">Treatment</span><span class="op">)</span>, <span class="co"># add in info on treatment used</span></span>
+<span>                    ilab.xpos <span class="op">=</span> <span class="op">-</span><span class="fl">8</span>, <span class="co"># position treatment labels</span></span>
+<span>                    order <span class="op">=</span> <span class="va">Treatment</span>, <span class="co"># Order results by treatment</span></span>
+<span>                    cex <span class="op">=</span> <span class="fl">1.5</span>,</span>
+<span>                    col <span class="op">=</span> <span class="st">"#0483A4"</span>, <span class="co"># change colour of overall effect size diamond using CEH hero colour</span></span>
+<span>                    mlab <span class="op">=</span> <span class="st">"RE Model for All Studies"</span>,</span>
+<span>                    header <span class="op">=</span> <span class="st">"Author(s) and Year"</span><span class="op">)</span></span>
+<span>    <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>And above these lines of code:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ----------------------------------------------------------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># =================================================================================================================</span></span>
+<span><span class="co"># =================================================================================================================</span></span>
+<span></span>
+<span><span class="co">##### References tab</span></span></code></pre></div>
+<p><br></p>
+<p>Code to add:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Make reactive moderator (for sub-group analysis) choices</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">reactive_moderator_choice</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderUI.html" class="external-link">renderUI</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="fu">shinyWidgets</span><span class="fu">::</span><span class="fu"><a href="https://dreamrs.github.io/shinyWidgets/reference/pickerInput.html" class="external-link">pickerInput</a></span><span class="op">(</span>inputId <span class="op">=</span> <span class="st">"moderator_choice"</span>,</span>
+<span>                            label <span class="op">=</span> <span class="st">"Moderator:"</span>,</span>
+<span>                            choices <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                            selected <span class="op">=</span> <span class="st">"Country"</span>,</span>
+<span>                            multiple <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># add actions box for selecting/de-selecting all options</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">### Run model</span></span>
+<span></span>
+<span><span class="co"># Run sub-group analysis model once the run model button has been pressed</span></span>
+<span><span class="va">sub_group_analysis</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/observeEvent.html" class="external-link">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">run_sub_group_analysis</span>, <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">subgroup_analysis_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span>  </span>
+<span>  <span class="co"># Try to run the model. If doesn't work, tell user to include more data or view error message.</span></span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
+<span>    expr <span class="op">=</span> <span class="op">{</span></span>
+<span>      </span>
+<span>      <span class="co"># add small value to control and treatment columns</span></span>
+<span>      <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Treatment_Mean</span> <span class="op">&lt;-</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Treatment_Mean</span> <span class="op">+</span> <span class="fl">0.1</span></span>
+<span>      <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Control_Mean</span> <span class="op">&lt;-</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Control_Mean</span> <span class="op">+</span> <span class="fl">0.1</span></span>
+<span>      </span>
+<span>      <span class="co"># calculate effect sizes from number, mean, and SD - data needs to be in wide format</span></span>
+<span>      <span class="co"># Adds yi and vi columns to data</span></span>
+<span>      <span class="va">subgroup_analysis_data</span> <span class="op">&lt;-</span> <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/escalc.html" class="external-link">escalc</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"ROM"</span>, <span class="co"># log transformed ratio of means (i.e. log response ratio)</span></span>
+<span>                                                n1i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Treatment_N</span>,</span>
+<span>                                                n2i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Control_N</span>,</span>
+<span>                                                m1i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Treatment_Mean</span>,</span>
+<span>                                                m2i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Control_Mean</span>,</span>
+<span>                                                sd1i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Treatment_error</span>,</span>
+<span>                                                sd2i <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">$</span><span class="va">Control_error</span>,</span>
+<span>                                                slab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">Paper_ID</span><span class="op">)</span>, <span class="co"># slab adds study labels which will help when we make forest plot</span></span>
+<span>                                                data <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">)</span></span>
+<span>      </span>
+<span>      <span class="co"># Make the chosen moderator a factor</span></span>
+<span>      <span class="va">input_mod_factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">subgroup_analysis_data</span><span class="op">[</span>, <span class="va">input</span><span class="op">$</span><span class="va">moderator_choice</span><span class="op">]</span><span class="op">)</span></span>
+<span>      </span>
+<span>      <span class="co"># Run metafor model</span></span>
+<span>      <span class="va">sub_group_analysis_model</span> <span class="op">&lt;-</span> <span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.mv.html" class="external-link">rma.mv</a></span><span class="op">(</span><span class="va">yi</span>, <span class="va">vi</span>, <span class="co"># effect sizes and corresponding variances</span></span>
+<span>                                                  random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">Paper_ID</span><span class="op">/</span><span class="va">Observation_ID</span>, <span class="co"># specify random-effects structure of model</span></span>
+<span>                                                  mods <span class="op">=</span> <span class="op">~</span> <span class="va">input_mod_factor</span>, <span class="co"># specify the user's chosen moderator</span></span>
+<span>                                                  data <span class="op">=</span> <span class="va">subgroup_analysis_data</span><span class="op">)</span></span>
+<span>      </span>
+<span>      <span class="va">sub_group_analysis</span> <span class="op">&lt;-</span> <span class="va">sub_group_analysis_model</span></span>
+<span>      </span>
+<span>      </span>
+<span>    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      </span>
+<span>      <span class="co"># If model does not successfully run, stop the process and return this error message</span></span>
+<span>      <span class="fu">base</span><span class="fu">::</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/safeError.html" class="external-link">safeError</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"This model failed to run. This may be due to insufficient data for this model to run, but please see the R error message: "</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">### Render the model summary output</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">subgroup_model_output</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">sub_group_analysis</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">sub_group_analysis</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p><br></p>
+<p>To test the app, click the ‘Run App’ button in RStudio, or use the
+‘shiny::runApp()’ command.</p>
+<p><br></p>
+<p>Adding these chunks of code results in an additional tab for
+sub-group analysis in the ‘Run models’ tab of the app. Here, you are
+given the option to chose a moderator, and then click ‘Run sub-group
+analysis’ to run the meta-analytic model and produce the R model
+summary.</p>
+<p><img src="../reference/figures/edit_codebase_subgroup_analysis.PNG" style="width:150.0%;height:150.0%"></p>
+<p><br></p>
+<p>Users can build on the example here around sub-group analysis, add
+additional features, or alter other parts of the app as desired.</p>
+<p><br></p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

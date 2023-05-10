@@ -33,6 +33,10 @@ Despite representing a significant improvement upon individual studies, meta-ana
 
 Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. Here on github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
 
+For an example of how the codebase can be edited to suit a specific user's needs, please see the last section of the [Dynameta vignette (Get started).](https://gls21.github.io/Dynameta/articles/Dynameta.html) 
+
+<br>
+
 Dynameta was developed as part of the [GLiTRS](https://glitrs.ceh.ac.uk/) project, a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change.
 
 <br>
@@ -94,7 +98,7 @@ install.packages(path_to_file, repos = NULL, type = "source") # where path_to_fi
 
 <br>
 
-### Using Dynameta 
+### Using the Dynameta package
 Once you have successfully installed Dynameta, to access help documentation, run:
 ```
 help(package = "Dynameta")
@@ -121,7 +125,7 @@ sample_data
 
 ### Introduction tab
 * Once the app has opened, you can choose whether you want to analyse the sample data included in the package or upload your own meta-analytic data to analyse. By default, Dynameta uses the sample data provided in the package. 
-* If you select 'Your own data', you will then be given the option to upload a .csv file. This needs to be of the same format as the sample data provided.
+* If you select 'Your own data', you will then be given the option to upload a .csv file. This needs to meet some criteria for Dynameta to be able to analyse it - there is a button to click to see which columns need to be included.
 * The 'Introduction' tab provides a breakdown of the data that you will analyse using Dynameta, including details of the papers and the IUCN threat(s) they investigated, and a map indicating where each data point originated from.
 
 <img src="man/figures/intro_tab.PNG" width="100%" height="100%">
@@ -136,7 +140,6 @@ sample_data
 <img src="man/figures/run_models_tab_choose_filters.PNG" width="100%" height="100%">
 
 * Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
-* You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
 
 <img src="man/figures/run_models_tab_forest_plot.PNG" width="100%" height="100%">
 
@@ -144,6 +147,18 @@ sample_data
 * View full paper details using the 'References' tab.
 
 <img src="man/figures/references_tab.PNG" width="100%" height="100%">
+
+### Resources tab
+* Contains useful links to guidance developed by communities of practice when conducting evidence syntheses. These include:
+    * [PRISMA](http://www.prisma-statement.org/) - For reporting systematic reviews and meta-analysis (developed for medical field but see ecology specific version below).
+    * [PRISMA Extension for Ecology and Evolution](http://www.prisma-statement.org/Extensions/EcoEvo) - For conducting environmental evidence syntheses.
+    * [ROSES](https://www.roses-reporting.com/) - For reporting systematic reviews and meta-analysis (developed for environmental research).
+    * [Collaboration for Environmental Evidence (CEE)](https://environmentalevidence.org/). See [here](https://environmentalevidence.org/information-for-authors) for full guidance document.
+    * [Cochrane Handbook for Systematic Reviews of Interventions](https://training.cochrane.org/handbook/current) - For conducting systematic reviews (developed for medical field).
+    * [Campbell Collaboration](https://www.campbellcollaboration.org/research-resources/training-courses.html) - For conducting evidence syntheses (developed for social sciences field).
+* The following are useful guides for conducting meta-analyses:
+    * [Doing Meta-Analysis with R: A Hands-On Guide](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/)
+    * [The metafor package tips and notes](http://www.metafor-project.org/doku.php/tips)
 
 <br>
 
