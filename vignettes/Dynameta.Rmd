@@ -160,7 +160,7 @@ To add sub-group analysis as an option in Dynameta, you need access to the scrip
 
 Next you will need to open the ui.R and server.R files that make up the Dynameta shiny app. These are in the [/inst/Dynameta_app/](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app) directory.
 
-The following chunks of code need to be added to the ui.R and server.R files at the line numbers specified. NOTE: The line numbers correspond to the line numbers in the Vxxx release of Dynameta code. 
+The following chunks of code need to be added to the ui.R and server.R files at the line numbers specified. NOTE: The line numbers correspond to the line numbers in the [v0.2.0 release](https://doi.org/10.5281/zenodo.7930601) of Dynameta code. 
 
 <br>
 

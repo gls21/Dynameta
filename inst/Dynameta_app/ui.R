@@ -119,7 +119,7 @@ ui <- shiny::navbarPage(
 
                   # Citation
                   p(h5("Please cite Dynameta as follows: Skinner, G., Cooke, R., Junghyuk, K., Purvis, A., Raw, C., Woodcock, B.A., Millard, J. (2023).
-                       Dynameta: a dynamic platform for ecological meta-analyses in R Shiny. R package version 0.1.0.")),
+                       Dynameta: a dynamic platform for ecological meta-analyses in R Shiny. R package v0.2.0. ", tags$a(href="https://doi.org/10.5281/zenodo.7930601", "https://doi.org/10.5281/zenodo.7930601."))),
 
                   tags$br(),
                   tags$hr(),
