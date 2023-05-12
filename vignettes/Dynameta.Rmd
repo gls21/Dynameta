@@ -24,10 +24,10 @@ Meta-analyses are used to quantitatively summarise evidence across studies in a 
 
 Despite representing a significant improvement upon individual studies, meta-analyses have a number of limitations which Dynameta was developed to overcome:
 
-1. Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available.
-2. Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.
+1. Meta-analytic results are based on a snapshot of literature at a particular time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available.
+2. Meta-analytic publications are restricted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.
 
-Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. On github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
+Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. Please see the [Editing the codebase](https://gls21.github.io/Dynameta/articles/Dynameta.html#editing-the-codebase) section of this vignette for an example of this. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. On github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
 
 Dynameta was developed as part of the [GLiTRS](https://glitrs.ceh.ac.uk/) project, a cross-institutional consortium aiming to build global threat-response models to better understand and predict insect biodiversity change.
 
@@ -78,6 +78,10 @@ Please see the [README](https://github.com/gls21/Dynameta/tree/main#readme) for 
 <br>
 
 ### Using the Dynameta package
+Any meta-analysis must be underpinned by a robust evidence gathering framework, which must be completed before proceeding with Dynameta. This includes writing and registering a protocol outlining clearly defined research questions and evidence inclusion criteria, carefully considering the suitability of evidence based on these criteria, and determining who will be responsible for updating the meta-analysis with Dynameta, and for how long (as to avoid research waste). Please refer to the resources listed in the [README](https://github.com/gls21/Dynameta#resources-tab).
+
+<br> 
+
 Once you have successfully installed Dynameta, to access help documentation, run:
 ```{r, eval = FALSE}
 help(package = "Dynameta")
@@ -124,7 +128,7 @@ Dynameta::launch_Dynameta() # The function takes no arguments
 ![](../man/figures/run_models_tab_choose_filters.PNG){width=150% height=150%}
 
 * Dynameta will run the model in real-time and produce a forest plot of the results. This includes an estimate of the overall effect size of your chosen IUCN threat on biodiversity.
-* You are also able to download the model object (.rds) and a file containing the results summary of the model fitting (.txt).
+* There are options available to download the results.
 
 ![](../man/figures/run_models_tab_forest_plot.PNG){width=150% height=150%}
 
@@ -144,11 +148,15 @@ Access links to guidance developed by communities of practice when conducting ev
 
 ## Editing the codebase
 A user may wish to edit the codebase to better suit their needs. Here we document an example of how to add the option to perform full sub-group analysis on the data (in addition to the current approach taken by Dynameta, which is to complete a meta-analysis on a subset of the data).
-For full sub-group analysis, several separate random-effects meta-analyses are conducted (one for each subgroup) and the effects of the subgroups are compared using a statistical test. To run a meta-analytic model with sub-group analysis using metafor, you can add a categorical variable as a moderator. 
+For full sub-group analysis, several separate random-effects meta-analyses are conducted (one for each sub-group) and the effects of the sub-groups are compared using a statistical test. To run a meta-analytic model with sub-group analysis using metafor, you can add a categorical variable as a moderator. 
 
 <br>
 
-To achieve this, you need access to the scripts that need to be edited. Possible options are to fork the [Dynameta GitHub repo](https://github.com/gls21/Dynameta), or download the repo as a zipped file. 
+Careful consideration needs to be taken when conducting sub-group analysis, both in terms of deciding when it is appropriate to carry out, and when interpreting the results. As a guide, the [Cochrane Handbook section 10.11.5.1](https://training.cochrane.org/handbook/current/chapter-10#section-10-11-5-1) suggests that at least ten data points need to be available for each sub-group modelled. For a guide to interpreting the results, please see [Richardson et al. (2019)](https://cegh.net/article/S2213-3984(18)30099-X/fulltext).    
+
+<br>
+
+To add sub-group analysis as an option in Dynameta, you need access to the scripts that need to be edited. Possible options are to fork the [Dynameta GitHub repo](https://github.com/gls21/Dynameta), or download the repo as a zipped file. 
 
 Next you will need to open the ui.R and server.R files that make up the Dynameta shiny app. These are in the [/inst/Dynameta_app/](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app) directory.
 
@@ -220,7 +228,7 @@ tags$hr(),
 
 Code/text to alter/add:
 ```{r, eval=FALSE}
-# Alter this text to describe difference between subset analysis and subgroup analysis 
+# Alter this text to describe difference between subset analysis and sub-group analysis 
 
 ## Comment out this original text ##
 #p(h5("Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric.")),
@@ -233,7 +241,7 @@ h5(tags$ol(
                             and run a meta-analytic model on this subset of data."),
   tags$li("Choose a moderator variable and carry out a full sub-group analysis 
                             (meta-regression with a categorical predictor) to see if the pooled effect sizes
-                            found in these subgroups differ from each other.")
+                            found in these sub-groups differ from each other.")
 )),
 
 ```
@@ -521,3 +529,10 @@ Users can build on the example here around sub-group analysis, add additional fe
 
 <br>
 
+## References
+
+Higgins JPT, Thomas J, Chandler J, Cumpston M, Li T, Page MJ, Welch VA (editors). Cochrane Handbook for Systematic Reviews of Interventions version 6.3 (updated February 2022). Cochrane, 2022. Available from www.training.cochrane.org/handbook.
+
+Richardson, M., Garner, P., & Donegan, S. (2019). Interpretation of subgroup analyses in systematic reviews: A tutorial. Clinical Epidemiology and Global Health, 7(2), 192–198. https://doi.org/10.1016/j.cegh.2018.05.005
+
+<br>

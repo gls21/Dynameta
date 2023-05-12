@@ -268,7 +268,8 @@ server <- function(input, output) {
   output$map_figure_legend <- shiny::renderText({
     base::paste("<b>Figure 1.</b>", "Map showing location of data points. Currently,", data_with_coords(), "out of", total_data_points(),
                 "data points have latitude and longitude co-ordinates provided to enable them to be plotted.<br>
-    Often, clusters of data points have the same co-ordinates. You can zoom in on, and click on, data clusters to explore the map.")
+                Often, clusters of data points have the same co-ordinates. You can zoom in on, and click on, data clusters to explore the map. 
+                Clicking on an individual data point provides a link to the original paper (if available).")
   })
 
   # Download map button
@@ -493,7 +494,7 @@ server <- function(input, output) {
           paste(shiny::isolate(input$taxa_order), collapse = ", "), " in ", paste(shiny::isolate(input$location), collapse = ", "), " measured with ",
           paste(shiny::isolate(input$biodiversity_metric_category), collapse = ", "), " as the biodiversity metric is ", round(stats::coef(custom_model()), digits = 2),
           ". This equates to a percentage change of ", percentage_change, "%", " [", ci_lb, "%, ", ci_ub, "%]. <br><br>",
-          "The I² statistic for the meta-analysis is ", i2, "%. This describes the percentage of total variance that is due to heterogeneity (variability among studies), and not due to chance. <br><br>",
+          "The", "<i> I² </i>", "statistic for the meta-analysis is ", i2, "%. This describes the percentage of total variance that is due to heterogeneity (variability among studies), and not due to chance. <br><br>",
           sep = "")
   })
 

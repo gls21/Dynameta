@@ -85,24 +85,24 @@ ui <- shiny::navbarPage(
                   which Dynameta was developed to overcome:")),
 
                   h5(tags$ol(
-                    tags$li("Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform,
+                    tags$li("Meta-analytic results are based on a snapshot of literature at a particular time. As a living review platform,
                             Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available."),
-                    tags$li("Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers.
+                    tags$li("Meta-analytic publications are restricted to presenting the results of the chosen questions asked by those researchers.
                             On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers
                             through manipulation of the graphical user interface.")
                   )),
 
                   p(h5("Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats
                   (based on the ", tags$a(href="https://www.iucnredlist.org/resources/threat-classification-scheme", "IUCN threats classification scheme", .noWS = "outside"),
-                       ") on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts.")),
+                  ") on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts.
+                  Please see the ", tags$a(href="https://gls21.github.io/Dynameta/articles/Dynameta.html#editing-the-codebase", "Editing the codebase"), " section of the vignette for an example of this.")),
 
-                  p(h5("The app is split into 3 main sections:")),
+                  p(h5("The app is split into 2 main sections:")),
 
                   h5(tags$ol(
                     tags$li("Use this 'Introduction' to choose data to analyse and investigate the data. The sample data is selected by default
                             and consists of data collected to test the effect of pollution (specifically pesticide application) on dragonfly and damselfly (Odonata) abundance"),
-                    tags$li("Go to 'Run models' to run custom meta-analytic models to investigate the effect of threats on biodiversity."),
-                    tags$li("Go to 'References' to view full details of the papers that contribute data to your analysis.")
+                    tags$li("Go to 'Run models' to run custom meta-analytic models to investigate the effect of threats on biodiversity.")
                   )),
 
                   p(h5("Dynameta was developed as part of the ", tags$a(href="https://glitrs.ceh.ac.uk/", "GLiTRS"), "project, a cross-institutional consortium aiming to build
@@ -372,7 +372,7 @@ ui <- shiny::navbarPage(
                                                                 the filters that were applied, and the R session information. Once downloaded,
                                                                 use the readRDS() and attributes() functions to load the model object and view its attributes.
                                                                 By downloading, it allows the same analysis to be repeated at a later date (perhaps after more data has become available)."),
-                                                       tags$li("Click 'Download forest plot' to download a .png file of your forest plot")
+                                                       tags$li("Click 'Download forest plot' to download a .png file of your forest plot.")
                                                      ))),
 
                                                      shiny::fluidRow(
@@ -474,16 +474,16 @@ ui <- shiny::navbarPage(
                   p(h5("Please refer to and follow the guidance developed by communities of practice
                        when conducting evidence syntheses:",
                        tags$ul(
+                         tags$li(tags$a(href="https://environmentalevidence.org/", "Collaboration for Environmental Evidence (CEE)"),
+                                 " - For conducting environmental evidence syntheses. See ",
+                                 tags$a(href="https://environmentalevidence.org/information-for-authors", "here"),
+                                 "for full guidance document."),
                          tags$li(tags$a(href="http://www.prisma-statement.org/", "PRISMA"),
                                  " - For reporting systematic reviews and meta-analysis
                                 (developed for medical field but see ecology specific version below)."),
                          tags$li(tags$a(href="http://www.prisma-statement.org/Extensions/EcoEvo", "PRISMA Extension for Ecology and Evolution")),
                          tags$li(tags$a(href="https://www.roses-reporting.com/", "ROSES"),
                                  " - For reporting systematic reviews and meta-analysis (developed for environmental research)."),
-                         tags$li(tags$a(href="https://environmentalevidence.org/", "Collaboration for Environmental Evidence (CEE)"),
-                                 " - For conducting environmental evidence syntheses. See ",
-                                 tags$a(href="https://environmentalevidence.org/information-for-authors", "here"),
-                                 "for full guidance document."),
                          tags$li(tags$a(href="https://training.cochrane.org/handbook/current", "Cochrane Handbook for Systematic Reviews of Interventions"),
                                  " - For conducting systematic reviews (developed for medical field)."),
                          tags$li(tags$a(href="https://www.campbellcollaboration.org/research-resources/training-courses.html", "Campbell Collaboration"),

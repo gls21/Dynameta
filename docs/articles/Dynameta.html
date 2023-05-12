@@ -95,10 +95,10 @@ studies, meta-analyses have a number of limitations which Dynameta was
 developed to overcome:</p>
 <ol style="list-style-type: decimal">
 <li>Meta-analytic results are based on a snapshot of literature at a
-particluar time. As a living review platform, Dynameta overcomes this by
+particular time. As a living review platform, Dynameta overcomes this by
 enabling results to be continually updated as new evidence becomes
 available.</li>
-<li>Meta-analytic publications are resticted to presenting the results
+<li>Meta-analytic publications are restricted to presenting the results
 of the chosen questions asked by those researchers. On the other hand,
 Dynameta allows investigation of a range of questions based on varying
 interests of researchers through manipulation of the graphical user
@@ -109,9 +109,11 @@ oriented around testing the effect of anthropogenic threats (based on
 the <a href="https://www.iucnredlist.org/resources/threat-classification-scheme" class="external-link">IUCN
 threats classification scheme</a>) on biodiversity. Nevertheless, the
 code can be easily repurposed to suit a variety of meta-analytic
-contexts. The server.R and ui.R files that define the Dynameta Shiny app
-can be found in the Dynameta_app/ directory. On github, Dynameta_app/
-can be found in the <a href="https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app" class="external-link">inst/
+contexts. Please see the <a href="https://gls21.github.io/Dynameta/articles/Dynameta.html#editing-the-codebase" class="external-link">Editing
+the codebase</a> section of this vignette for an example of this. The
+server.R and ui.R files that define the Dynameta Shiny app can be found
+in the Dynameta_app/ directory. On github, Dynameta_app/ can be found in
+the <a href="https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app" class="external-link">inst/
 directory</a>. If you have installed the package, the Dynameta_app/
 directory can be found directly in the package root directory, alongside
 the DESCRIPTION, NAMESPACE, etc. files.</p>
@@ -164,6 +166,15 @@ alternative installation options.</p>
 <div class="section level3">
 <h3 id="using-the-dynameta-package">Using the Dynameta package<a class="anchor" aria-label="anchor" href="#using-the-dynameta-package"></a>
 </h3>
+<p>Any meta-analysis must be underpinned by a robust evidence gathering
+framework, which must be completed before proceeding with Dynameta. This
+includes writing and registering a protocol outlining clearly defined
+research questions and evidence inclusion criteria, carefully
+considering the suitability of evidence based on these criteria, and
+determining who will be responsible for updating the meta-analysis with
+Dynameta, and for how long (as to avoid research waste). Please refer to
+the resources listed in the <a href="https://github.com/gls21/Dynameta#resources-tab" class="external-link">README</a>.</p>
+<p><br></p>
 <p>Once you have successfully installed Dynameta, to access help
 documentation, run:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -254,8 +265,7 @@ collected with.</li>
 <li>Dynameta will run the model in real-time and produce a forest plot
 of the results. This includes an estimate of the overall effect size of
 your chosen IUCN threat on biodiversity.</li>
-<li>You are also able to download the model object (.rds) and a file
-containing the results summary of the model fitting (.txt).</li>
+<li>There are options available to download the results.</li>
 </ul>
 <p><img src="../reference/figures/run_models_tab_forest_plot.PNG" style="width:150.0%;height:150.0%"></p>
 <p><br></p>
@@ -283,13 +293,22 @@ we document an example of how to add the option to perform full
 sub-group analysis on the data (in addition to the current approach
 taken by Dynameta, which is to complete a meta-analysis on a subset of
 the data). For full sub-group analysis, several separate random-effects
-meta-analyses are conducted (one for each subgroup) and the effects of
-the subgroups are compared using a statistical test. To run a
+meta-analyses are conducted (one for each sub-group) and the effects of
+the sub-groups are compared using a statistical test. To run a
 meta-analytic model with sub-group analysis using metafor, you can add a
 categorical variable as a moderator.</p>
 <p><br></p>
-<p>To achieve this, you need access to the scripts that need to be
-edited. Possible options are to fork the <a href="https://github.com/gls21/Dynameta" class="external-link">Dynameta GitHub repo</a>, or
+<p>Careful consideration needs to be taken when conducting sub-group
+analysis, both in terms of deciding when it is appropriate to carry out,
+and when interpreting the results. As a guide, the <a href="https://training.cochrane.org/handbook/current/chapter-10#section-10-11-5-1" class="external-link">Cochrane
+Handbook section 10.11.5.1</a> suggests that at least ten data points
+need to be available for each sub-group modelled. For a guide to
+interpreting the results, please see <a href="https://cegh.net/article/S2213-3984(18)30099-X/fulltext" class="external-link">Richardson
+et al. (2019)</a>.</p>
+<p><br></p>
+<p>To add sub-group analysis as an option in Dynameta, you need access
+to the scripts that need to be edited. Possible options are to fork the
+<a href="https://github.com/gls21/Dynameta" class="external-link">Dynameta GitHub repo</a>, or
 download the repo as a zipped file.</p>
 <p>Next you will need to open the ui.R and server.R files that make up
 the Dynameta shiny app. These are in the <a href="https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app" class="external-link">/inst/Dynameta_app/</a>
@@ -343,7 +362,7 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">### Running custom models</span></span></code></pre></div>
 <p><br></p>
 <p>Code/text to alter/add:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alter this text to describe difference between subset analysis and subgroup analysis </span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alter this text to describe difference between subset analysis and sub-group analysis </span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Comment out this original text ##</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p(h5("Based on your research question, you can filter the data by threat, location, taxonomic order, and biodiversity metric.")),</span></span>
@@ -356,7 +375,7 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">                            and run a meta-analytic model on this subset of data."</span>),</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">li</span>(<span class="st">"Choose a moderator variable and carry out a full sub-group analysis </span></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">                            (meta-regression with a categorical predictor) to see if the pooled effect sizes</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">                            found in these subgroups differ from each other."</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">                            found in these sub-groups differ from each other."</span>)</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>)),</span></code></pre></div>
 <p><br></p>
 </div>
@@ -501,7 +520,7 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <p>Insert the code beneath these lines of code:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download forest plot button</span></span>
-<span><span class="va">output</span><span class="op">$</span><span class="va">download_forest_plot</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/downloadHandler.html" class="external-link">downloadHandler</a></span><span class="op">(</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">download_forest_plot</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/downloadHandler.html" class="external-link">downloadHandler</a></span><span class="op">(</span></span>
 <span>  </span>
 <span>  filename <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"forest_plot"</span>, <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">".png"</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span>
@@ -533,7 +552,7 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <p>Code to add:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Make reactive moderator (for sub-group analysis) choices</span></span>
-<span><span class="va">output</span><span class="op">$</span><span class="va">reactive_moderator_choice</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderUI.html" class="external-link">renderUI</a></span><span class="op">(</span><span class="op">{</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">reactive_moderator_choice</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderUI.html" class="external-link">renderUI</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu">shinyWidgets</span><span class="fu">::</span><span class="fu"><a href="https://dreamrs.github.io/shinyWidgets/reference/pickerInput.html" class="external-link">pickerInput</a></span><span class="op">(</span>inputId <span class="op">=</span> <span class="st">"moderator_choice"</span>,</span>
 <span>                            label <span class="op">=</span> <span class="st">"Moderator:"</span>,</span>
 <span>                            choices <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -544,7 +563,7 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <span><span class="co">### Run model</span></span>
 <span></span>
 <span><span class="co"># Run sub-group analysis model once the run model button has been pressed</span></span>
-<span><span class="va">sub_group_analysis</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/observeEvent.html" class="external-link">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">run_sub_group_analysis</span>, <span class="op">{</span></span>
+<span><span class="va">sub_group_analysis</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html" class="external-link">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">run_sub_group_analysis</span>, <span class="op">{</span></span>
 <span>  </span>
 <span>  <span class="va">subgroup_analysis_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>  </span>
@@ -583,15 +602,15 @@ correspond to the line numbers in the Vxxx release of Dynameta code.</p>
 <span>    <span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      </span>
 <span>      <span class="co"># If model does not successfully run, stop the process and return this error message</span></span>
-<span>      <span class="fu">base</span><span class="fu">::</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/safeError.html" class="external-link">safeError</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"This model failed to run. This may be due to insufficient data for this model to run, but please see the R error message: "</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu">base</span><span class="fu">::</span><span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/safeError.html" class="external-link">safeError</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"This model failed to run. This may be due to insufficient data for this model to run, but please see the R error message: "</span>, <span class="va">e</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Render the model summary output</span></span>
-<span><span class="va">output</span><span class="op">$</span><span class="va">subgroup_model_output</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="op">{</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">subgroup_model_output</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html" class="external-link">renderPrint</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  </span>
-<span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">sub_group_analysis</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">sub_group_analysis</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">sub_group_analysis</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
@@ -613,6 +632,18 @@ their needs.</p>
 <p><br></p>
 </div>
 </div>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>Higgins JPT, Thomas J, Chandler J, Cumpston M, Li T, Page MJ, Welch
+VA (editors). Cochrane Handbook for Systematic Reviews of Interventions
+version 6.3 (updated February 2022). Cochrane, 2022. Available from
+www.training.cochrane.org/handbook.</p>
+<p>Richardson, M., Garner, P., &amp; Donegan, S. (2019). Interpretation
+of subgroup analyses in systematic reviews: A tutorial. Clinical
+Epidemiology and Global Health, 7(2), 192–198. <a href="https://doi.org/10.1016/j.cegh.2018.05.005" class="external-link uri">https://doi.org/10.1016/j.cegh.2018.05.005</a></p>
+<p><br></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -28,12 +28,12 @@ Dynameta is an [R Shiny](https://shiny.rstudio.com/) platform written as an R pa
 Meta-analyses are used to quantitatively summarise evidence across studies in a systematic process. Their larger sample size (and hence power) compared to individual research studies increases the chance of detecting significant effects.
 
 Despite representing a significant improvement upon individual studies, meta-analyses have a number of limitations which Dynameta was developed to overcome:
-1. Meta-analytic results are based on a snapshot of literature at a particluar time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available.
-2. Meta-analytic publications are resticted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.
+1. Meta-analytic results are based on a snapshot of literature at a particular time. As a living review platform, Dynameta overcomes this by enabling results to be continually updated as new evidence becomes available.
+2. Meta-analytic publications are restricted to presenting the results of the chosen questions asked by those researchers. On the other hand, Dynameta allows investigation of a range of questions based on varying interests of researchers through manipulation of the graphical user interface.
 
-Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. Here on github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
+Dynameta is designed for interactive ecological meta-analyses, oriented around testing the effect of anthropogenic threats (based on the [IUCN threats classification scheme](https://www.iucnredlist.org/resources/threat-classification-scheme)) on biodiversity. Nevertheless, the code can be easily repurposed to suit a variety of meta-analytic contexts. For an example of how the codebase can be edited to suit a specific user's needs, please see the last section of the [Dynameta vignette (Get started).](https://gls21.github.io/Dynameta/articles/Dynameta.html) The server.R and ui.R files that define the Dynameta Shiny app can be found in the Dynameta_app/ directory. Here on github, Dynameta_app/ can be found in the [inst/ directory](https://github.com/gls21/Dynameta/tree/main/inst/Dynameta_app). If you have installed the package, the Dynameta_app/ directory can be found directly in the package root directory, alongside the DESCRIPTION, NAMESPACE, etc. files. 
 
-For an example of how the codebase can be edited to suit a specific user's needs, please see the last section of the [Dynameta vignette (Get started).](https://gls21.github.io/Dynameta/articles/Dynameta.html) 
+
 
 <br>
 
@@ -99,6 +99,8 @@ install.packages(path_to_file, repos = NULL, type = "source") # where path_to_fi
 <br>
 
 ### Using the Dynameta package
+Any meta-analysis must be underpinned by a robust evidence gathering framework, which must be completed before proceeding with Dynameta. This includes writing and registering a protocol outlining clearly defined research questions and evidence inclusion criteria, carefully considering the suitability of evidence based on these criteria, and determining who will be responsible for updating the meta-analysis with Dynameta, and for how long (as to avoid research waste). Please refer to the guidance documents listed below in the 'Resources' tab section.
+
 Once you have successfully installed Dynameta, to access help documentation, run:
 ```
 help(package = "Dynameta")
@@ -150,10 +152,10 @@ sample_data
 
 ### Resources tab
 * Contains useful links to guidance developed by communities of practice when conducting evidence syntheses. These include:
+    * [Collaboration for Environmental Evidence (CEE)](https://environmentalevidence.org/). See [here](https://environmentalevidence.org/information-for-authors) for full guidance document.
     * [PRISMA](http://www.prisma-statement.org/) - For reporting systematic reviews and meta-analysis (developed for medical field but see ecology specific version below).
     * [PRISMA Extension for Ecology and Evolution](http://www.prisma-statement.org/Extensions/EcoEvo) - For conducting environmental evidence syntheses.
     * [ROSES](https://www.roses-reporting.com/) - For reporting systematic reviews and meta-analysis (developed for environmental research).
-    * [Collaboration for Environmental Evidence (CEE)](https://environmentalevidence.org/). See [here](https://environmentalevidence.org/information-for-authors) for full guidance document.
     * [Cochrane Handbook for Systematic Reviews of Interventions](https://training.cochrane.org/handbook/current) - For conducting systematic reviews (developed for medical field).
     * [Campbell Collaboration](https://www.campbellcollaboration.org/research-resources/training-courses.html) - For conducting evidence syntheses (developed for social sciences field).
 * The following are useful guides for conducting meta-analyses:
@@ -173,6 +175,7 @@ sample_data
     * sample_data.R - describes the sample data included with the package that can be analysed using the Dynameta Shiny app (necessary to make the help documentation for the dataset).
 * data
     * sample_data.rda - R data file containing the sample data.
+* docs - directory for building the Dynameta pkgdown website.
 * inst
     * Dynameta_app
         * server.R - defines how the Dynameta Shiny app works (back-end development).
@@ -192,11 +195,13 @@ sample_data
 * man
     * launch_Dynameta.Rd - R documentation file for the launch_Dynameta() function.
     * sample_data.Rd - R documentation file for the sample data. 
+    * figures - images needed for pkgdown website.
 * tests
     * testthat/test-shinytest2_test.R - test driver script that runs the shinytest2 tests in the inst/Dynameta_app/tests directory. 
     * testthat.R - part of standard setup for testthat.
 * vignettes
     * Dynameta.Rmd - R markdown document for the Dynameta package and Shiny app vignette.
+* CITATION.cff - citation file for Dynameta.
 * DESCRIPTION - overall metadata about the Dynameta package.
 * LICENSE - declare Dynameta package as licensed.
 * LICENSE.md - includes a copy of the full text of the license.
